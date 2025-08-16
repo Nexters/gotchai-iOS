@@ -6,6 +6,6 @@
 //
 
 enum NetworkError: Error {
-    case statusCode(Int)
-    case api(APIError)
+    case RequestError(code: Int, message: String)
+    case DecodeError(code: Int, message: String)
 }

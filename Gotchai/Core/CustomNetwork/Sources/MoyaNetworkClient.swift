@@ -31,19 +31,29 @@ public final class MoyaAPIClient: NetworkClient {
             })
             .tryMap { response in
                 guard (200 ..< 300).contains(response.statusCode) else {
-                    if let errorResponse = try? JSONDecoder().decode(APIResponse<APIError>.self, from: response.data) {
-                        throw NetworkError.api(errorResponse.data)
+                    if let errorResponse = try? JSONDecoder().decode(APIResponse<ErrorResponseDTO>.self, from: response.data) {
+                        throw ErrorResponseDTO.init(
+                            errorCode: errorResponse.data.errorCode,
+                            message: errorResponse.data.message
+                        )
                     }
-                    throw NetworkError.statusCode(response.statusCode)
+                    throw NetworkError
+                        .RequestError(
+                            code: response.statusCode,
+                            message: response.description)
                 }
 
                 let decoded = try JSONDecoder().decode(APIResponse<T>.self, from: response.data)
 
                 guard decoded.isSuccess else {
-                    if let errorResponse = try? JSONDecoder().decode(APIResponse<APIError>.self, from: response.data) {
-                        throw NetworkError.api(errorResponse.data)
+                    if let errorResponse = try? JSONDecoder().decode(APIResponse<ErrorResponseDTO>.self, from: response.data) {
+                        throw ErrorResponseDTO.init(
+                            errorCode: errorResponse.data.errorCode,
+                            message: errorResponse.data.message
+                        )
                     }
-                    throw NetworkError.statusCode(response.statusCode)
+                    throw NetworkError
+                        .DecodeError(code: 9999, message: "Decode 오류가 발생했습니다.")
                 }
 
                 return decoded.data
