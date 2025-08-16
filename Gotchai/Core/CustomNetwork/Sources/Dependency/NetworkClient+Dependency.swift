@@ -1,18 +1,15 @@
 //
-//  Dependency.swift
-//  Network
+//  NetworkClient+Dependency.swift
+//  CustomNetwork
 //
-//  Created by koreamango on 8/9/25.
+//  Created by koreamango on 8/17/25.
 //
-
 
 import TCA
-import Moya
 
 extension MoyaAPIClient: DependencyKey {
     public static let liveValue: NetworkClient = {
-        let provider = MoyaProvider<MultiTarget>(plugins: [AuthPlugin()])
-        return MoyaAPIClient(provider: provider)
+        MockNetworkClient()
     }()
 }
 

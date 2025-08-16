@@ -16,7 +16,6 @@ let project = Project(
                 .external(name: "CombineMoya"),
                 .project(target: "Common", path: .relativeToRoot("Gotchai/Core/Common")),
                 .project(target: "TCA", path: .relativeToRoot("Gotchai/Core/Third/TCA")),
-                .project(target: "Key", path: .relativeToRoot("Gotchai/Core/Key")),
             ]
         )
     ]

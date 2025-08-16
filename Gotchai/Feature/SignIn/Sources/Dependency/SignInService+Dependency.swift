@@ -7,11 +7,16 @@
 
 
 import TCA
+import CustomNetwork
 
 extension SignInService: DependencyKey {
     public static let liveValue: SignInService = {
-        SignInService(networkClient: DependencyValues.live.networkClient)
+        SignInService(networkClient: MockNetworkClient())
     }()
+
+    public static func live(_ network: NetworkClient) -> Self {
+        .init(networkClient: network)
+    }
 }
 
 public extension DependencyValues {
