@@ -9,7 +9,7 @@ import TCA
 
 extension MoyaAPIClient: DependencyKey {
     public static let liveValue: NetworkClient = {
-        MoyaAPIClient()
+        MockNetworkClient()
     }()
 }
 
