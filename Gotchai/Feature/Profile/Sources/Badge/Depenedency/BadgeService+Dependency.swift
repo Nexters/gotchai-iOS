@@ -12,6 +12,10 @@ extension BadgeService: DependencyKey {
     public static let liveValue: BadgeService = {
         BadgeService(networkClient: MockNetworkClient())
     }()
+
+    public static func live(_ network: NetworkClient) -> Self {
+        .init(networkClient: network)
+    }
 }
 
 public extension DependencyValues {

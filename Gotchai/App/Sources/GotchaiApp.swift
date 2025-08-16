@@ -20,7 +20,12 @@ struct GotchaiApp: App {
         self.store = Store(initialState: AppFeature.State()) {
             AppFeature()
         } withDependencies: {
-            $0.networkClient = networkClient   // ✅ 여기서 한 번만 주입
+            $0.networkClient = networkClient
+            $0.solvedTuringTestService = .live(networkClient)
+            $0.badgeService = .live(networkClient)
+            $0.settingService = .live(networkClient)
+            $0.signInService = .live(networkClient)
+            $0.turingTestService = .live(networkClient)
         }
     }
 

@@ -12,6 +12,10 @@ extension SettingService: DependencyKey {
     public static let liveValue: SettingService = {
         SettingService(networkClient: MockNetworkClient())
     }()
+
+    public static func live(_ network: NetworkClient) -> Self {
+        .init(networkClient: network)
+    }
 }
 
 public extension DependencyValues {

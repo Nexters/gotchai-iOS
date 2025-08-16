@@ -12,6 +12,10 @@ extension SolvedTuringTestService: DependencyKey {
     public static let liveValue: SolvedTuringTestService = {
         SolvedTuringTestService(networkClient: MockNetworkClient())
     }()
+
+    public static func live(_ network: NetworkClient) -> Self {
+        .init(networkClient: network)
+    }
 }
 
 public extension DependencyValues {

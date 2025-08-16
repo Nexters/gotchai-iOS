@@ -9,13 +9,17 @@ import TCA
 import CustomNetwork
 
 extension TuringTestService: DependencyKey {
-    static let liveValue: TuringTestService = {
+    public static let liveValue: TuringTestService = {
         TuringTestService(networkClient: MockNetworkClient())
     }()
+
+    public static func live(_ network: NetworkClient) -> Self {
+        .init(networkClient: network)
+    }
 }
 
-extension DependencyValues {
-    var turingTestService: TuringTestService {
+public extension DependencyValues {
+     var turingTestService: TuringTestService {
         get { self[TuringTestService.self] }
         set { self[TuringTestService.self] = newValue }
     }
