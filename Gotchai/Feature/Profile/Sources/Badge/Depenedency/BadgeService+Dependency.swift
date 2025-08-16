@@ -6,10 +6,11 @@
 //
 
 import TCA
+import CustomNetwork
 
 extension BadgeService: DependencyKey {
     public static let liveValue: BadgeService = {
-        BadgeService(networkClient: DependencyValues.live.networkClient)
+        BadgeService(networkClient: MockNetworkClient())
     }()
 }
 
