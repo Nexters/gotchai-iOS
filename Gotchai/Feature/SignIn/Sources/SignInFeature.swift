@@ -105,6 +105,7 @@ public struct SignInFeature {
                 // MARK: - 세션 등록 결과
             case let .registerSessionResponse(.success(tokens)):
                 tokenProvider.accessToken = tokens.accessToken
+                tokenProvider.refreshToken = tokens.refreshToken
                 state.isLoading = false
                 return .send(.delegate(.didSignIn))
 
