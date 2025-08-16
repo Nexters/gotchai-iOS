@@ -12,17 +12,12 @@ import Combine
 import CombineMoya
 
 public final class MoyaAPIClient: NetworkClient {
-    private let provider: MoyaProvider<MultiTarget>?
-    private let refresher: TokenRefresherProtocol?
+    private let provider: MoyaProvider<MultiTarget>
+    private let refresher: TokenRefresherProtocol
 
     public init(provider: MoyaProvider<MultiTarget>, refresher: TokenRefresherProtocol) {
         self.provider = provider
         self.refresher = refresher
-    }
-
-    public init() {
-        self.provider = nil
-        self.refresher = nil
     }
 
     // 에러가 "만료"인지 판단하는 헬퍼
@@ -56,10 +51,6 @@ public final class MoyaAPIClient: NetworkClient {
 
     // 원요청 한 번 실행
     private func rawRequest<T: Decodable>(_ target: any Moya.TargetType, type: T.Type) -> AnyPublisher<T, Error> {
-        guard let provider = provider else {
-            fatalError("MoyaAPIClient provider is nil")
-        }
-
         return provider
             .requestPublisher(MultiTarget(target))
             .handleEvents(receiveOutput: { response in
@@ -78,10 +69,6 @@ public final class MoyaAPIClient: NetworkClient {
         _ target: any Moya.TargetType,
         type: T.Type
     ) -> AnyPublisher<T, any Error> {
-        guard let refresher = refresher else {
-            fatalError("MoyaAPIClient refresher is nil")
-        }
-
         return rawRequest(target, type: T.self)
             .catch { [weak self] error -> AnyPublisher<T, Error> in
                 guard let self, refresher.shouldRefresh(for: error) else {
@@ -97,19 +84,10 @@ public final class MoyaAPIClient: NetworkClient {
 
     public func request(_ target: TargetType) -> AnyPublisher<Void, Error> {
         func rawVoid() -> AnyPublisher<Void, Error> {
-            guard let provider = provider else {
-                fatalError("MoyaAPIClient provider is nil")
-            }
-
             return provider.requestPublisher(MultiTarget(target))
                 .tryMap { try $0.filterSuccessfulStatusCodes(); return () }
                 .eraseToAnyPublisher()
         }
-
-        guard let refresher = refresher else {
-            fatalError("MoyaAPIClient provider is nil")
-        }
-
 
         return rawVoid()
             .catch { [weak self] error -> AnyPublisher<Void, Error> in
