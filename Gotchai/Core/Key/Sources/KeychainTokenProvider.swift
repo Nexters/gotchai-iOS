@@ -67,7 +67,7 @@ public final class KeychainTokenProvider: TokenProvider {
         let query: [CFString: Any] = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrService: service,
-            kSecAttrAccount: account,
+            kSecAttrAccount: account.rawValue,
             kSecValueData: data
         ]
 
@@ -78,7 +78,7 @@ public final class KeychainTokenProvider: TokenProvider {
         let query: [CFString: Any] = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrService: service,
-            kSecAttrAccount: account
+            kSecAttrAccount: account.rawValue
         ]
         SecItemDelete(query as CFDictionary)
     }
