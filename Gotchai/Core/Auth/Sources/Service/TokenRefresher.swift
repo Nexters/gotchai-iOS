@@ -27,10 +27,13 @@ public final class TokenRefresher: TokenRefresherProtocol {
     public func shouldRefresh(for error: Error) -> Bool {
         // 서비스 규격에 맞게 판정
         // 1) HTTP 401
-        if case NetworkError.RequestError(let code, _) = error, code == 401 { return true }
+        if case NetworkError.RequestError(let errorCode, _) = error,
+           errorCode == "UNAUTHENTICATED_USER" {
+            return true
+        }
         // 2) 서버 에러 DTO의 토큰 만료 코드
         if let e = error as? ErrorResponseDTO {
-            return e.errorCode == "401"
+            return e.errorCode == "UNAUTHENTICATED_USER"
         }
         return false
     }

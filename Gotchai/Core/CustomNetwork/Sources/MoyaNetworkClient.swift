@@ -25,9 +25,9 @@ public final class MoyaAPIClient: NetworkClient {
         if case NetworkError.Unauthorized = error { return true }
         if let err = error as? ErrorResponseDTO {
             // 서버 정의된 만료 코드로 교체
-            return err.errorCode == "401"
+            return err.errorCode == "UNAUTHENTICATED_USER"
         }
-        if case NetworkError.RequestError(let code, _) = error, code == 401 { return true }
+        if case NetworkError.RequestError(let errorCode, _) = error, errorCode == "UNAUTHENTICATED_USER" { return true }
         return false
     }
 
@@ -36,7 +36,7 @@ public final class MoyaAPIClient: NetworkClient {
             if let errorResponse = try? JSONDecoder().decode(APIResponse<ErrorResponseDTO>.self, from: response.data) {
                 throw ErrorResponseDTO(errorCode: errorResponse.data.errorCode, message: errorResponse.data.message)
             }
-            throw NetworkError.RequestError(code: response.statusCode, message: response.description)
+            throw NetworkError.RequestError(code: "\(response.statusCode)", message: response.description)
         }
 
         let decoded = try JSONDecoder().decode(APIResponse<T>.self, from: response.data)
@@ -44,7 +44,7 @@ public final class MoyaAPIClient: NetworkClient {
             if let errorResponse = try? JSONDecoder().decode(APIResponse<ErrorResponseDTO>.self, from: response.data) {
                 throw ErrorResponseDTO(errorCode: errorResponse.data.errorCode, message: errorResponse.data.message)
             }
-            throw NetworkError.DecodeError(code: 9999, message: "Decode 오류가 발생했습니다.")
+            throw NetworkError.DecodeError(code: "9999", message: "Decode 오류가 발생했습니다.")
         }
         return decoded.data
     }
@@ -59,12 +59,13 @@ public final class MoyaAPIClient: NetworkClient {
                 #endif
             })
             .tryMap { [weak self] response in
-                guard let self = self else { throw NetworkError.DecodeError(code: -1, message: "Deallocated") }
+                guard let self = self else { throw NetworkError.DecodeError(code: "-1", message: "Deallocated") }
                 return try self.decodeAPI(response, as: T.self)
             }
             .eraseToAnyPublisher()
     }
 
+    // type이 있는 요청 전용
     public func request<T: Decodable>(
         _ target: any Moya.TargetType,
         type: T.Type
@@ -82,6 +83,7 @@ public final class MoyaAPIClient: NetworkClient {
             .eraseToAnyPublisher()
     }
 
+    // type이 없는 요청 전용
     public func request(_ target: TargetType) -> AnyPublisher<Void, Error> {
         func rawVoid() -> AnyPublisher<Void, Error> {
             return provider.requestPublisher(MultiTarget(target))

@@ -7,6 +7,6 @@
 
 public enum NetworkError: Error {
     case Unauthorized
-    case RequestError(code: Int, message: String)
-    case DecodeError(code: Int, message: String)
+    case RequestError(code: String, message: String)
+    case DecodeError(code: String, message: String)
 }
