@@ -17,7 +17,8 @@ let project = Project(
                 "UILaunchScreen": [
                     "UIImageName": "launch_logo",
                     "UIColorName": "launch_color"
-                ]
+                ],
+                "NSPhotoLibraryAddUsageDescription": "배지를 사진 앨범에 저장하려고 합니다."
             ]),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
