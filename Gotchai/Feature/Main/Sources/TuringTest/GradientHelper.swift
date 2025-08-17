@@ -94,24 +94,30 @@ struct GradientHelper {
     }
 }
 
+struct BadgeColor {
+    var titleColor: String
+    var subColor: String
+    var image: String
+}
+
 // 티어 별 배지 카드 컴포넌트 컬러
 extension GradientHelper {
-    static func getBadgeColors(for theme: GradientTheme) -> (titleColor: String, subColor: String, image: String) {
+    static func getBadgeColors(for theme: GradientTheme) -> BadgeColor {
         switch theme {
         case .gold:
-            return (
+            return BadgeColor(
                 titleColor: "FFEC87",
                 subColor: "BDAB47",
                 image: "logo_gold"
             )
         case .silver:
-            return (
+            return BadgeColor(
                 titleColor: "6D8DC4",
                 subColor: "BED6FF",
                 image: "logo_silver"
             )
         case .bronze:
-            return (
+            return BadgeColor(
                 titleColor: "FFC289",
                 subColor: "B9804B",
                 image: "logo_bronze"

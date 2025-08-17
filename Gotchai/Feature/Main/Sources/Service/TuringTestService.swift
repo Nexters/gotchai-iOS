@@ -7,14 +7,15 @@
 
 import Combine
 import CustomNetwork
+import UIKit
 
 struct TuringTestService {
     private let networkClient: NetworkClient
-    
+
     init(networkClient: NetworkClient) {
         self.networkClient = networkClient
     }
-    
+
     func getTestList(_ target: TuringTestAPI) -> AnyPublisher<[TuringTestCard], Error> {
         networkClient
             .request(target, type: TuringTestListResponseDTO.self)
@@ -35,7 +36,7 @@ struct TuringTestService {
             }
             .eraseToAnyPublisher()
     }
-    
+
     func getTuringTest(_ target: TuringTestAPI) -> AnyPublisher<TuringTest, Error> {
         networkClient
             .request(target, type: TuringTestItemDTO.self)
@@ -54,7 +55,7 @@ struct TuringTestService {
             }
             .eraseToAnyPublisher()
     }
-    
+
     func startTuringTest(_ target: TuringTestAPI) -> AnyPublisher<[Int], Error> {
         networkClient
             .request(target, type: TuringTestStartResponseDTO.self)
@@ -63,7 +64,7 @@ struct TuringTestService {
             }
             .eraseToAnyPublisher()
     }
-    
+
     func getQuiz(_ target: TuringTestAPI) -> AnyPublisher<Quiz, Error> {
         networkClient
             .request(target, type: GetQuizDTO.self)
@@ -75,7 +76,7 @@ struct TuringTestService {
             }
             .eraseToAnyPublisher()
     }
-    
+
     func gradeQuiz(_ target: TuringTestAPI) -> AnyPublisher<AnswerPopUp, Error> {
         networkClient
             .request(target, type: GradeQuizResponseDTO.self)
@@ -87,18 +88,29 @@ struct TuringTestService {
             }
             .eraseToAnyPublisher()
     }
-        
+
     func submitTest(_ target: TuringTestAPI) -> AnyPublisher<ResultBadge, Error> {
         networkClient
             .request(target, type: SubmitTuringTestResponseDTO.self)
-            .map { dto in
-                ResultBadge(
-                    imageURL: dto.badge.image,
-                    badgeName: dto.badge.name,
-                    description: dto.badge.description,
-                    tier: GradientTheme(rawValue: dto.badge.tier) ?? .bronze,
-                    correctCount: dto.answerCount
-                )
+            .flatMap { dto -> AnyPublisher<ResultBadge, Error> in
+                guard let url = URL(string: dto.badge.image) else {
+                    return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
+                }
+
+                return URLSession.shared.dataTaskPublisher(for: url)
+                    .tryMap { data, _ in
+                        guard let uiImage = UIImage(data: data) else {
+                            throw URLError(.cannotDecodeContentData)
+                        }
+                        return ResultBadge(
+                            image: uiImage,
+                            badgeName: dto.badge.name,
+                            description: dto.badge.description,
+                            tier: GradientTheme(rawValue: dto.badge.tier) ?? .bronze,
+                            correctCount: dto.answerCount
+                        )
+                    }
+                    .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
     }

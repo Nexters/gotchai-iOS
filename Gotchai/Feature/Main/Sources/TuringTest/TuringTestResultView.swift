@@ -68,39 +68,20 @@ public struct TuringTestResultView: View {
             startPoint: .top,
             endPoint: .bottom)
     }
-    
+
     @ViewBuilder
     private func BadgeCard() -> some View {
-        let count = store.resultBadge?.correctCount ?? 0
-        let countText = count == 7 ? "모두 맞춘 당신은" : "7개 중 \(count)개를 맞춘 당신은"
-        
-        VStack(spacing: 0) {
-            AsyncImage(url: URL(string: store.resultBadge?.imageURL ?? "")) { image in
-                image.resizable()
-            } placeholder: {
+        VStack {
+            if let badge = store.resultBadge {
+                BadgeCardView(badge: badge)
+            } else {
                 ProgressView()
+                    .frame(maxHeight: .infinity) 
             }
-            .frame(width: 213, height: 213)
-            .clipShape(Circle())
-
-            Text(countText)
-                .fontStyle(.body_1)
-                .foregroundStyle(Color(hex: badgeCardColor.subColor))
-                .padding(.top, 26)
-            Text(store.resultBadge?.badgeName ?? "")
-                .fontStyle(.title_3)
-                .foregroundStyle(Color(hex: badgeCardColor.titleColor))
-            Text(store.resultBadge?.description ?? "")
-                .fontStyle(.body_4)
-                .foregroundStyle(Color(.gray_white).opacity(0.7))
-                .multilineTextAlignment(.center)
-                .padding(.top, 16)
-            Image(badgeCardColor.image, bundle: .module)
-                .padding(.top, 36)
         }
         .padding([.horizontal, .top], 34)
         .padding(.bottom, 27)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, minHeight: 400) // BadgeCardView 높이에 맞춤
         .gradientBackground(
             stops: gradientStops.badgeLinearBackground,
             startPoint: .topLeading,
@@ -119,7 +100,7 @@ public struct TuringTestResultView: View {
         )
         .clipShape(RoundedRectangle(cornerRadius: 24))
     }
-    
+
     @ViewBuilder
     private func PromptCard() -> some View {
         VStack(spacing: 0) {
@@ -143,17 +124,17 @@ public struct TuringTestResultView: View {
             .frame(width: 133, height: 133)
             .clipShape(Circle())
             .padding(.vertical, 16)
-                
+
             Text(store.turingTest.prompt)
                 .fontStyle(.body_4)
                 .multilineTextAlignment(.center)
-            
+
             Rectangle()
                 .frame(height: 1)
                 .foregroundStyle(Color(.gray_500))
                 .padding(.top, 32)
             Button {
-                
+
             } label: {
                 HStack {
                     Image("", bundle: .module)
@@ -173,7 +154,7 @@ public struct TuringTestResultView: View {
                 .fill(Color(hex: "BFC9E7").opacity(0.1))
         )
     }
-    
+
     @ViewBuilder
     private func BackgroundGradient() -> some View {
         Color.clear
@@ -184,12 +165,12 @@ public struct TuringTestResultView: View {
                 endPoint: .bottom
             )
     }
-    
+
     @ViewBuilder
     private func BottomButtons() -> some View {
         HStack(alignment: .bottom, spacing: 13) {
             Button {
-                
+                store.send(.tappedSaveBadgeButton)
             } label: {
                 HStack(spacing: 4) {
                     Image("icon_save", bundle: .module)
@@ -202,9 +183,9 @@ public struct TuringTestResultView: View {
             }
             .background(Color(.primary_100))
             .clipShape(RoundedRectangle(cornerRadius: 16))
-            
+
             Button {
-                
+                store.send(.tappedTestShareButton)
             } label: {
                 HStack(spacing: 4) {
                     Image("icon_insta", bundle: .module)
