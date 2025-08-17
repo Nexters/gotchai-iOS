@@ -79,8 +79,29 @@ public struct TuringTestResultView: View {
                     badgeRadialBackground: gradientStops.badgeRadialBackground
                 )
             } else {
-                ProgressView()
-                    .frame(maxHeight: .infinity) 
+                VStack {
+                    ProgressView()
+                        .frame(maxHeight: .infinity)
+                }.padding([.horizontal, .top], 34)
+                    .padding(.bottom, 27)
+                    .frame(maxWidth: .infinity, minHeight: 400) // BadgeCardView 높이에 맞춤
+                    .gradientBackground(
+                        stops: gradientStops.badgeLinearBackground,
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing,
+                        cornerRadius: 24,
+                        strokeColor: Color(.gray_white).opacity(0.2),
+                        backgroundOpacity: 0.2
+                    )
+                    .background(
+                        RadialGradient(
+                            gradient: Gradient(stops: gradientStops.badgeRadialBackground),
+                            center: .bottom,
+                            startRadius: 0,
+                            endRadius: 400
+                        ).opacity(0.2)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 24))
             }
         }
         .padding([.horizontal, .top], 34)
