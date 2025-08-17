@@ -73,7 +73,11 @@ public struct TuringTestResultView: View {
     private func BadgeCard() -> some View {
         VStack {
             if let badge = store.resultBadge {
-                BadgeCardView(badge: badge)
+                BadgeCardView(
+                    badge: badge,
+                    badgeLinearBackground: gradientStops.badgeLinearBackground,
+                    badgeRadialBackground: gradientStops.badgeRadialBackground
+                )
             } else {
                 ProgressView()
                     .frame(maxHeight: .infinity) 

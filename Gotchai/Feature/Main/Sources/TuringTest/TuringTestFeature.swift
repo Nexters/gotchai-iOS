@@ -64,8 +64,8 @@ public struct TuringTestFeature {
 
     public var body: some ReducerOf<Self> {
         Reduce {
- state,
- action in
+            state,
+            action in
             switch action {
                 // MARK: - Action: Life Cycle
             case .onAppearIntroView:
@@ -97,10 +97,16 @@ public struct TuringTestFeature {
                     fatalError("❌ Meta Key is missing in Info.plist")
                 }
                 guard let instagramURL = URL(string:
-                      "instagram-stories://share?source_application=" +
+                                                "instagram-stories://share?source_application=" +
                                              key) else { return .none }
-                
-                if let uiImage = BadgeCardView(badge: badge).snapshot() {
+
+                var gradientStops = GradientHelper.getGradientStops(
+                    for: badge.tier
+                )
+
+                if let uiImage = BadgeCardView(badge: badge,
+                                               badgeLinearBackground: gradientStops.badgeLinearBackground,
+                                               badgeRadialBackground: gradientStops.badgeRadialBackground ).snapshot() {
                     let imageData = uiImage.pngData()
 
                     let pasteboardItems: [String: Any] = [
@@ -127,11 +133,17 @@ public struct TuringTestFeature {
 
             case .tappedSaveBadgeButton:
                 guard let badge = state.resultBadge else { return .none }
+                var gradientStops = GradientHelper.getGradientStops(
+                    for: badge.tier
+                )
 
                 return .run { _ in
-                    if let uiImage = await BadgeCardView(badge: badge).snapshot() {
-                    UIImageWriteToSavedPhotosAlbum(uiImage, nil, nil, nil)
-                  }
+                    if let uiImage = await BadgeCardView(badge: badge,
+                                                         badgeLinearBackground: gradientStops.badgeLinearBackground,
+                                                         badgeRadialBackground: gradientStops.badgeRadialBackground
+                    ).snapshot() {
+                        UIImageWriteToSavedPhotosAlbum(uiImage, nil, nil, nil)
+                    }
                 }
 
             case .getResultBadge:
