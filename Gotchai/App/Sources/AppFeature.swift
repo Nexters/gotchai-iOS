@@ -12,9 +12,13 @@ import Setting
 import Key
 import Auth
 import Common
+import Combine
 
 @Reducer
 struct AppFeature {
+    @Dependency(\.authClient) var authClient
+    @Dependency(\.autoAuthProvider) var autoAuthProvider
+
     struct State {
         enum Root: Equatable { case booting, onboarding, signIn, main }
         var root: Root = .booting
@@ -36,6 +40,7 @@ struct AppFeature {
 
         // 👇 자동 로그인 트리거 & 결과
         case appLaunched
+        case signInResponse(Result<UserSession, Error>)
     }
 
     // 핵심 리듀서를 분리(타입 추론 안정화)
@@ -44,14 +49,20 @@ struct AppFeature {
             switch action {
                 // 앱이 켜지면 자동 로그인 시도
             case .appLaunched:
-                let access = KeychainTokenProvider.shared.accessToken
-
-                if let access, !isJWTExpired(access) {
-                    state.root = .main
-                    return .none
+                return .publisher {
+                  authClient.signIn(autoAuthProvider)
+                    .map { .signInResponse(.success($0)) }
+                    .catch { Just(.signInResponse(.failure($0))) }
                 }
+            case let .signInResponse(.success(session)):
+                print("자동 로그인 성공")
+              state.root = session.token.isEmpty ? .onboarding : .main
+              return .none
+
+            case .signInResponse(.failure):
+                print("자동 로그인 실패")
                 state.root = .onboarding
-                return .none
+              return .none
 
                 // 온보딩 → 로그인으로
             case .onboarding(.delegate(.navigateToSignIn)):

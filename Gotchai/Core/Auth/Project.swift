@@ -19,6 +19,7 @@ let project = Project(
                 .external(name: "KakaoSDKUser"),
                 .project(target: "TCA", path: .relativeToRoot("Gotchai/Core/Third/TCA")),
                 .project(target: "CustomNetwork", path: .relativeToRoot("Gotchai/Core/CustomNetwork")),
+                .project(target: "Common", path: .relativeToRoot("Gotchai/Core/Common")),
             ]
         )
     ]
