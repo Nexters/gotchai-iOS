@@ -27,6 +27,7 @@ public struct SolvedTuringTestListView: View {
                                 .padding(.horizontal, 24)
                         }
                     }
+                    .padding(.vertical, 8)
                 }
             }
             .task { await store.send(.task).finish() }
@@ -56,8 +57,12 @@ public struct SolvedTuringTestListView: View {
     @ViewBuilder
     private func TestCard(data: SolvedTuringTest) -> some View {
         HStack(spacing: 20) {
-            AsyncImage(url: URL(string: data.iconURL))
-                .frame(width: 44, height: 44)
+            AsyncImage(url: URL(string: data.iconURL)) { image in
+                image.resizable()
+            } placeholder: {
+                ProgressView()
+            }
+            .frame(width: 44, height: 44)
             VStack(alignment: .leading, spacing: 2) {
                 Text(data.title)
                     .foregroundStyle(Color(.gray_white))
@@ -67,7 +72,7 @@ public struct SolvedTuringTestListView: View {
             
             Spacer()
             Text("\(data.percent)%")
-                .foregroundStyle(Color(.sub_blue))
+                .foregroundStyle(data.correctCount > 3 ? Color(.sub_blue) : Color(.sub_red))
         }
         .fontStyle(.body_4)
         .padding(.horizontal, 20)

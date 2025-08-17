@@ -8,6 +8,7 @@
 import DesignSystem
 import SwiftUI
 import TCA
+import Common
 
 public struct ProfileView: View {
     
@@ -80,27 +81,34 @@ public struct ProfileView: View {
                         .padding(.leading, 14)
                 }
             }
-            Rectangle()
-                .frame(height: 1)
-                .foregroundStyle(Color(.gray_500))
-                .padding(.top, 8)
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("기계사냥꾼")
-                    Text("7월 16일에 획득")
-                        .fontStyle(.body_6)
-                        .foregroundStyle(Color(.gray_500))
-                }
-                Spacer()
-                AsyncImage(url: URL(string: ""))
+            .padding(.bottom, store.lastBadge == nil ? 12 : 8)
+            
+            if let badge = store.lastBadge {
+                Rectangle()
+                    .frame(height: 1)
+                    .foregroundStyle(Color(.gray_500))
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(badge.name)
+                        Text("\(DateManager.shared.parseISO(badge.acquiredAt))에 획득")
+                            .fontStyle(.body_6)
+                            .foregroundStyle(Color(.gray_500))
+                    }
+                    Spacer()
+                    AsyncImage(url: URL(string: badge.imageURL)) { image in
+                        image.resizable()
+                    } placeholder: {
+                        ProgressView()
+                    }
                     .frame(width: 95, height: 95)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
+                .padding(.vertical, 20)
             }
-            .padding(.top, 20)
         }
         .fontStyle(.body_2)
         .foregroundStyle(Color(.gray_white))
-        .padding([.horizontal, .bottom], 20)
+        .padding(.horizontal, 20)
         .padding(.top, 12)
         .background(Color(.gray_900))
         .clipShape(RoundedRectangle(cornerRadius: 20))
@@ -140,7 +148,7 @@ public struct ProfileView: View {
 
 #Preview {
     ProfileView(
-        store: Store(initialState: ProfileFeature.State(), reducer: {
+        store: Store(initialState: ProfileFeature.State(totalTuringTestCount: 8), reducer: {
             ProfileFeature()
         })
     )

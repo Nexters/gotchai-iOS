@@ -57,8 +57,8 @@ struct AppFeature {
                 return .none
             case .main(.profile(.delegate(let profileAction))):
                 switch profileAction {
-                case .openMyBadgeList:
-                    state.path.append(.badgeList(.init()))
+                case .openMyBadgeList(let total):
+                    state.path.append(.badgeList(.init(totalBadgeCount: total)))
                 case .openMySovledTuringTestList:
                     state.path.append(.solvedTuringTest(.init()))
                 }
