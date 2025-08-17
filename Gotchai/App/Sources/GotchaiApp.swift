@@ -32,6 +32,9 @@ struct GotchaiApp: App {
     var body: some Scene {
         WindowGroup {
             AppView(store: store)
+                .task {
+                    await store.send(.appLaunched).finish()
+                }
         }
     }
 }
