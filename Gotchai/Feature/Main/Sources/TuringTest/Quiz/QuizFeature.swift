@@ -89,6 +89,7 @@ public struct QuizFeature {
                 state.isRunningTimer = true
                 
                 return .run { send in
+                    await send(.tick)
                     let timerSequence = Timer.publish(every: 1.0, on: .main, in: .common)
                         .autoconnect()
                         .values
