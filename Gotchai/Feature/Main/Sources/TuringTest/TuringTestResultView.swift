@@ -44,6 +44,11 @@ public struct TuringTestResultView: View {
             }
             
             BottomButtons()
+            
+            if store.showToastMessage {
+                Toast(message: store.toastMessage)
+                    .padding(.bottom, 90)
+            }
         }
         .navigationBarBackButtonHidden()
         .onAppear {

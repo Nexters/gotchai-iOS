@@ -7,10 +7,14 @@
 
 import SwiftUI
 
-struct Toast: View {
+public struct Toast: View {
     let message: String
     
-    var body: some View {
+    public init(message: String) {
+        self.message = message
+    }
+    
+    public var body: some View {
         HStack {
             Image("icon_check", bundle: .module)
             Text(message)
@@ -21,6 +25,7 @@ struct Toast: View {
         .padding(.vertical, 10)
         .background(Color.gray700)
         .clipShape(RoundedRectangle(cornerRadius: 40))
+        .transition(.opacity)
     }
 }
 

@@ -18,6 +18,7 @@ public struct TuringTestFeature {
         case getTuringTestItem
         case postTuringTestStart
         case submitTuringTest
+        case toastTimer
     }
     
     public init() { }
@@ -27,6 +28,8 @@ public struct TuringTestFeature {
         var turingTestID: Int
         var turingTest: TuringTest
         var resultBadge: ResultBadge?
+        var toastMessage: String = ""
+        var showToastMessage: Bool = false
         
         public init(turingTestID: Int = -1, turingTest: TuringTest = TuringTest.dummy, resultBadge: ResultBadge? = nil) {
             self.turingTestID = turingTestID
@@ -52,6 +55,8 @@ public struct TuringTestFeature {
         case delegate(Delegate)
         case getResultBadge
         case copyPromptButton
+        case showToast(String)
+        case hideToast
         
         // data
         case getTuringTestResponse(Result<TuringTest, Error>)
@@ -97,13 +102,28 @@ public struct TuringTestFeature {
                 .cancellable(id: CancelID.submitTuringTest)
             
             case .copyPromptButton:
+                // 프롬프트 복사
                 let prompt = state.turingTest.prompt
-                return .run { _ in
+                let copyEffect: Effect<Action> = .run { _ in
                     await MainActor.run {
                         UIPasteboard.general.string = prompt
                     }
                 }
                 
+                let toastEffect = createToastEffect(message: "프롬프트를 복사했어요")
+                
+                return .merge(copyEffect, toastEffect)
+                
+            case .showToast(let message):
+                state.toastMessage = message
+                state.showToastMessage = true
+                return .none
+            
+            case .hideToast:
+                state.toastMessage = ""
+                state.showToastMessage = false
+                return .none
+            
             // MARK: - Action: 데이터 응답 처리
             case .getTuringTestResponse(let result):
                 switch result {
@@ -135,5 +155,19 @@ public struct TuringTestFeature {
                 return .none
             }
         }
+    }
+    
+    private func createToastEffect(message: String) -> Effect<TuringTestFeature.Action> {
+        .run { send in
+            // showToast 액션 전송
+            await send(.showToast(message))
+            
+            // 2초 지연
+            try await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+            
+            // hideToast 액션 전송
+            await send(.hideToast)
+        }
+        .cancellable(id: CancelID.toastTimer, cancelInFlight: true)
     }
 }
