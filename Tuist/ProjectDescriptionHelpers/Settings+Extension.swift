@@ -12,7 +12,11 @@ public extension Settings {
         return .settings(
             base: [
                 "IPHONEOS_DEPLOYMENT_TARGET": "17.0",
-                "DEVELOPMENT_TEAM": "$(DEVELOPMENT_TEAM)"
+                "DEVELOPMENT_TEAM": "$(DEVELOPMENT_TEAM)",
+                
+                // version
+                "MARKETING_VERSION": "1.0.0",
+                "CURRENT_PROJECT_VERSION": "2"
             ],
             configurations: [
                 .debug(name: "Debug", xcconfig: .relativeToRoot("Tuist/Configurations/Config.xcconfig")),

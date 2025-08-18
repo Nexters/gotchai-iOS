@@ -17,7 +17,9 @@ let project = Project(
                 "UILaunchScreen": [
                     "UIImageName": "launch_logo",
                     "UIColorName": "launch_color"
-                ]
+                ],
+                "CFBundleShortVersionString": "$(MARKETING_VERSION)",
+                "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)"
             ]),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
