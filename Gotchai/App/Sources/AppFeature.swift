@@ -9,12 +9,19 @@ import Onboarding
 import SignIn
 import Main // 모듈명이 Swift의 @main 과 헷갈리면 이름 변경 고려
 import Setting
+import Key
+import Auth
+import Common
+import Combine
 
 @Reducer
 struct AppFeature {
+    @Dependency(\.authClient) var authClient
+    @Dependency(\.autoAuthProvider) var autoAuthProvider
+
     struct State {
-        enum Root: Equatable { case onboarding, signIn, main }
-        var root: Root = .onboarding
+        enum Root: Equatable { case booting, onboarding, signIn, main }
+        var root: Root = .booting
         var onboarding = OnboardingFeature.State()
         var signIn     = SignInFeature.State()
         var main = MainFeature.State()
@@ -30,12 +37,33 @@ struct AppFeature {
         case main(MainFeature.Action)
 
         case path(StackActionOf<AppPath>)
+
+        // 👇 자동 로그인 트리거 & 결과
+        case appLaunched
+        case signInResponse(Result<UserSession, Error>)
     }
 
     // 핵심 리듀서를 분리(타입 추론 안정화)
     private var core: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+                // 앱이 켜지면 자동 로그인 시도
+            case .appLaunched:
+                return .publisher {
+                  authClient.signIn(autoAuthProvider)
+                    .map { .signInResponse(.success($0)) }
+                    .catch { Just(.signInResponse(.failure($0))) }
+                }
+            case let .signInResponse(.success(session)):
+                print("자동 로그인 성공")
+              state.root = session.token.isEmpty ? .onboarding : .main
+              return .none
+
+            case .signInResponse(.failure):
+                print("자동 로그인 실패")
+                state.root = .onboarding
+              return .none
+
                 // 온보딩 → 로그인으로
             case .onboarding(.delegate(.navigateToSignIn)):
                 state.root = .signIn
@@ -113,12 +141,12 @@ struct AppFeature {
                 // 세팅 화면에서 받는 Action
                 state.path.removeAll()
                 return .none
-                
+
             case .path(.element(id: _, action: .badgeList(.delegate(.moveToMainView)))):
                 // 배지 리스트 화면에서 받는 Action
                 state.path.removeAll()
                 return .none
-                
+
             case .path(.element(id: _, action: .solvedTuringTest(.delegate(.moveToMainView)))):
                 state.path.removeAll()
                 return .none
@@ -126,7 +154,7 @@ struct AppFeature {
             case .path(.element(id: _, action: .turingTestResult(.delegate(.moveToMainView)))):
                 state.path.removeAll()
                 return .none
-                
+
             case let .setRoot(root):
                 state.root = root
                 return .none

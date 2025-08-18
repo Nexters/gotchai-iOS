@@ -8,10 +8,10 @@
 import Combine
 import CustomNetwork
 
-struct TuringTestService {
+public struct TuringTestService {
     private let networkClient: NetworkClient
     
-    init(networkClient: NetworkClient) {
+    public init(networkClient: NetworkClient) {
         self.networkClient = networkClient
     }
     

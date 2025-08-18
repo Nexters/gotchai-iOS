@@ -7,7 +7,7 @@
 
 import Combine
 
-public enum AuthProviderKind: Equatable, Sendable { case kakao, apple }
+public enum AuthProviderKind: Equatable, Sendable { case kakao, apple, auto }
 
 public protocol AuthProvider: Sendable {
     var kind: AuthProviderKind { get }
