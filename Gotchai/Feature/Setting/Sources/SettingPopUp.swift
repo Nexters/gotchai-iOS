@@ -9,15 +9,15 @@ import SwiftUI
 
 struct SettingPopUp: ViewModifier {
     @Binding var isPresented: Bool
-    let type: SettingPopUpType
+    let type: SettingPopUpType?
     let action: () -> Void
     
     func body(content: Content) -> some View {
         ZStack {
             content
-                .blur(radius: isPresented ? 10 : 0)
+                .blur(radius: isPresented && type != nil ? 10 : 0)
             
-            if isPresented {
+            if isPresented && type != nil {
                 Color(.gray_black).opacity(0.6).ignoresSafeArea()
                 PopUpView(isLogout: type == .logout)
             }
@@ -74,7 +74,7 @@ struct SettingPopUp: ViewModifier {
 }
 
 extension View {
-    func settingPopUp(isPresented: Binding<Bool>, type: SettingPopUpType, action: @escaping () -> Void) -> some View {
+    func settingPopUp(isPresented: Binding<Bool>, type: SettingPopUpType?, action: @escaping () -> Void) -> some View {
         self.modifier(SettingPopUp(isPresented: isPresented, type: type, action: action))
     }
 }

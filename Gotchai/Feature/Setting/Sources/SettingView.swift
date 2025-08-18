@@ -75,7 +75,7 @@ public struct SettingView: View {
                     get: \.isPresentedPopUp,
                     send: SettingFeature.Action.setIsPresentedPopUp
                 ),
-                type: viewStore.popUpType ?? .logout) {
+                type: viewStore.popUpType) {
                     if viewStore.popUpType == .logout {
                         viewStore.send(.logout)
                     } else {
