@@ -12,7 +12,8 @@ let packageSettings = PackageSettings(
     "CombineMoya": .framework,
     "KakaoSDKCommon": .framework,
     "KakaoSDKAuth": .framework,
-    "KakaoSDKUser": .framework
+    "KakaoSDKUser": .framework,
+    "Kingfisher": .framework
   ]
 )
 #endif
