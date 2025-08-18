@@ -150,10 +150,10 @@ public struct TuringTestResultView: View {
                 .foregroundStyle(Color(.gray_500))
                 .padding(.top, 32)
             Button {
-                
+                store.send(.copyPromptButton)
             } label: {
                 HStack {
-                    Image("", bundle: .module)
+                    Image("icon_copy", bundle: .module)
                     Text("프롬프트 복사하기")
                         .fontStyle(.body_3)
                         .foregroundStyle(Color(.primary_400))

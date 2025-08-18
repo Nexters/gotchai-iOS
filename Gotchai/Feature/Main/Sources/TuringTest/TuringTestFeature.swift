@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import TCA
+import UIKit
 
 @Reducer
 public struct TuringTestFeature {
@@ -50,6 +51,7 @@ public struct TuringTestFeature {
         case tappedBackButton
         case delegate(Delegate)
         case getResultBadge
+        case copyPromptButton
         
         // data
         case getTuringTestResponse(Result<TuringTest, Error>)
@@ -93,6 +95,14 @@ public struct TuringTestFeature {
                         .receive(on: RunLoop.main)
                 }
                 .cancellable(id: CancelID.submitTuringTest)
+            
+            case .copyPromptButton:
+                let prompt = state.turingTest.prompt
+                return .run { _ in
+                    await MainActor.run {
+                        UIPasteboard.general.string = prompt
+                    }
+                }
                 
             // MARK: - Action: 데이터 응답 처리
             case .getTuringTestResponse(let result):
