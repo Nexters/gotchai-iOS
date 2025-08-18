@@ -10,7 +10,7 @@ let project = Project(
             destinations: .iOS,
             product: .framework,
             bundleId: "com.gotchai.auth",
-            infoPlist: "Info.plist",
+            infoPlist: .default,
             sources: ["Sources/**"],
             entitlements: "../../App/Gotchai.entitlements",
             dependencies: [
