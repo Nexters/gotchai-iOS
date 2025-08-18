@@ -33,6 +33,7 @@ public struct QuizFeature {
         var quizIdList: [Int]
         var quizIndex: Int = -1
         var quiz: Quiz
+        var backgroundImageURL: String
         var answerCardState: [AnswerCardState]
         var isSelectedAnswer: Bool = false
         var answerPopUpData: AnswerPopUp = .init(answer: "", status: .notAnswered)
@@ -41,10 +42,12 @@ public struct QuizFeature {
         public init(
             quizIdList: [Int] = [],
             quiz: Quiz = Quiz.dummy,
+            backgroundImageURL: String = "",
             isAnswerPopUpPresented: Bool = false
         ) {
             self.quizIdList = quizIdList
             self.quiz = quiz
+            self.backgroundImageURL = backgroundImageURL
             self.answerCardState = Array(repeating: .idle, count: quiz.answers.count)
             self.isAnswerPopUpPresented = isAnswerPopUpPresented
         }

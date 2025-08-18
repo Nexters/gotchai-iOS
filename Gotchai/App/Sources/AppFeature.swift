@@ -109,8 +109,8 @@ struct AppFeature {
             case .path(.element(id: _, action: .turingTestConcept(.delegate(let turingAction)))):
                 // 테스트 상황 세팅 화면에서 받는 Action
                 switch turingAction {
-                case let .moveToQuizView(quizIds):
-                    state.path.append(.quiz(.init(quizIdList: quizIds)))
+                case let .moveToQuizView(quizIds, backgroundImage):
+                    state.path.append(.quiz(.init(quizIdList: quizIds, backgroundImageURL: backgroundImage)))
                 case .moveToMainView:
                     state.path.removeAll()
                 default: break

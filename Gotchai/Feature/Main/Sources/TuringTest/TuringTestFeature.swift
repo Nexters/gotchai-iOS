@@ -36,7 +36,7 @@ public struct TuringTestFeature {
     
     public enum Delegate {
         case moveToConceptView(Int, TuringTest)
-        case moveToQuizView([Int])
+        case moveToQuizView(quizIds: [Int], backgroundImageURL: String)
         case moveToMainView
     }
     
@@ -109,7 +109,7 @@ public struct TuringTestFeature {
             case .postTuringTestStartResponse(let result):
                 switch result {
                 case .success(let quizIds):
-                    return .send(.delegate(.moveToQuizView(quizIds)))
+                    return .send(.delegate(.moveToQuizView(quizIds: quizIds, backgroundImageURL: state.turingTest.backgroundImageURL)))
                 case .failure(let error):
                     print("테스트 시작 실패:", error)
                     return .none
