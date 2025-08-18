@@ -9,6 +9,7 @@ import DesignSystem
 import SwiftUI
 import TCA
 import Common
+import Kingfisher
 
 public struct ProfileView: View {
     
@@ -95,13 +96,11 @@ public struct ProfileView: View {
                             .foregroundStyle(Color(.gray_500))
                     }
                     Spacer()
-                    AsyncImage(url: URL(string: badge.imageURL)) { image in
-                        image.resizable()
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .frame(width: 95, height: 95)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    KFImage(URL(string: badge.imageURL))
+                        .resizable()
+                        .placeholder { ProgressView() }
+                        .frame(width: 95, height: 95)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
                 .padding(.vertical, 20)
             }
