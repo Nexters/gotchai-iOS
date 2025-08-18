@@ -114,22 +114,31 @@ public struct TuringTestFeature {
                                                badgeRadialBackground: gradientStops.badgeRadialBackground ).snapshot() {
                     let imageData = uiImage.pngData()
 
-                    let pasteboardItems: [String: Any] = [
+                    // 1) Pasteboard
+                    let items: [String: Any] = [
                         "com.instagram.sharedSticker.stickerImage": imageData,
-                        "com.instagram.sharedSticker.backgroundTopColor" : "#FC5555",
-                        "com.instagram.sharedSticker.backgroundBottomColor" : "#176AB7"
+                        "com.instagram.sharedSticker.backgroundTopColor": "#FC5555",
+                        "com.instagram.sharedSticker.backgroundBottomColor": "#176AB7"
                     ]
+                    UIPasteboard.general.setItems([items], options: [
+                        .expirationDate: Date().addingTimeInterval(300) // 5분 유효(선택)
+                    ])
 
-                    // ① pasteboard에 저장 (만료 옵션을 줄 수도 있음)
-                    UIPasteboard.general.setItems([pasteboardItems], options: [:])
+                    // 2) instagram-stories://share?source_application=<bundle id>
+                    var comps = URLComponents()
+                    comps.scheme = "instagram-stories"
+                    comps.host = "share"
+                    comps.queryItems = [
+                        URLQueryItem(name: "source_application", value: Bundle.main.bundleIdentifier)
+                    ]
+                    guard let url = comps.url else { return .none }
 
-                    // ② Instagram 실행
-                    if UIApplication.shared.canOpenURL(instagramURL) {
-                        UIApplication.shared.open(instagramURL, options: [:], completionHandler: nil)
-                    } else {
-                        // 인스타그램 없을 경우 App Store로
-                        if let appStoreURL = URL(string: "itms-apps://itunes.apple.com/app/389801252") {
-                            UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
+                    // 3) 열기
+                    DispatchQueue.main.async {
+                        if UIApplication.shared.canOpenURL(url) {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        } else if let store = URL(string: "itms-apps://itunes.apple.com/app/389801252") {
+                            UIApplication.shared.open(store, options: [:], completionHandler: nil)
                         }
                     }
                 }
