@@ -5,6 +5,7 @@ import Auth
 import CustomNetwork
 import Common
 import Moya
+import Profile
 
 @main
 struct GotchaiApp: App {
@@ -26,6 +27,7 @@ struct GotchaiApp: App {
             $0.settingService = .live(networkClient)
             $0.signInService = .live(networkClient)
             $0.turingTestService = .live(networkClient)
+            $0.profileService = .live(networkClient)
         }
     }
 
