@@ -88,6 +88,7 @@ public struct ProfileView: View {
                 Rectangle()
                     .frame(height: 1)
                     .foregroundStyle(Color(.gray_500))
+                    .opacity(0.4)
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(badge.name)
