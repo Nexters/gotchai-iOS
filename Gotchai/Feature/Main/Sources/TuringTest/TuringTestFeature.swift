@@ -10,6 +10,7 @@ import Combine
 import TCA
 import UIKit
 import SwiftUI
+import Common
 
 @Reducer
 public struct TuringTestFeature {
@@ -142,11 +143,12 @@ public struct TuringTestFeature {
                 )
 
                 return .run { _ in
-                    if let uiImage = await BadgeCardView(badge: badge,
-                                                         badgeLinearBackground: gradientStops.badgeLinearBackground,
-                                                         badgeRadialBackground: gradientStops.badgeRadialBackground
+                    if let uiImage = await BadgeCardView(
+                        badge: badge,
+                        badgeLinearBackground: gradientStops.badgeLinearBackground,
+                        badgeRadialBackground: gradientStops.badgeRadialBackground
                     ).snapshot() {
-                        UIImageWriteToSavedPhotosAlbum(uiImage, nil, nil, nil)
+                        savePNGToPhotos(uiImage)
                     }
                 }
 

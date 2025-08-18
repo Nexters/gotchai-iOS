@@ -12,6 +12,7 @@ extension View {
     public func snapshot() -> UIImage? {
         let renderer = ImageRenderer(content: self)
         renderer.scale = UIScreen.main.scale
+        renderer.isOpaque = false // ✅ 투명 배경 허용
         return renderer.uiImage
     }
 }
