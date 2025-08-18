@@ -46,6 +46,8 @@ public struct SettingFeature {
         case showPopUp(SettingPopUpType)
         case setIsPresentedPopUp(Bool)  // 바인딩용
         case delegate(Delegate)
+        
+        case failed(String)
     }
 
     public var body: some ReducerOf<Self> {
@@ -64,14 +66,15 @@ public struct SettingFeature {
                 return .none
 
             case .logout:
+                // 서버에 세션 종료 통보
                 return .publisher {
-                    authClient.signOut()
-                        .map { _ in .logoutSucceeded }    // 성공 시 액션 변환
-                        .catch { error in                 // 실패 시 액션 변환
-                            Just(.logoutFailed(error.localizedDescription))
-                        }
-                        .receive(on: DispatchQueue.main)  // UI 업데이트 안전
+                  settingService.signOut()
+                    .map { _ in .logoutSucceeded }
+                    .catch { Just(.logoutFailed($0.localizedDescription)) }
+                    .receive(on: DispatchQueue.main)
                 }
+                
+                
 
             case .logoutSucceeded:
                 // 로컬 토큰/세션 정리(필요 시)
@@ -80,10 +83,10 @@ public struct SettingFeature {
                 state.popUpType = nil
 
                 return .publisher {
-                  settingService.signOut()    // 서버에 세션 종료 통보
-                    .map { _ in .delegate(.didLogout) }
-                    .catch { _ in Just(.delegate(.didLogout)) } // 실패해도 UX 진행
-                    .receive(on: DispatchQueue.main)
+                    authClient.signOut()
+                        .map { _ in .delegate(.didLogout) }    // 성공 시 액션 변환
+                        .catch { Just(.failed($0.localizedDescription)) }
+                        .receive(on: DispatchQueue.main)  // UI 업데이트 안전
                 }
 
             case .logoutFailed(let message):
@@ -102,7 +105,10 @@ public struct SettingFeature {
                     .catch { _ in Just(.delegate(.didLogout)) } // 실패해도 UX 진행
                     .receive(on: DispatchQueue.main)
                 }
-
+                
+            case .failed(let error):
+                print("Failed: \(error)")
+                return .none
             default: return .none
             }
         }

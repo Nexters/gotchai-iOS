@@ -20,12 +20,15 @@ extension SettingAPI: BaseTarget {
         case .signOut:
             return apiPrefix + "/auth/logout"
         case .delete:
-            return apiPrefix + ""
+            return apiPrefix + "/auth/withdrawal"
         }
     }
 
     var method: Moya.Method {
-        .post
+        switch self {
+        case .signOut: return .post
+        case .delete: return .delete
+        }
     }
 
     var task: Task {

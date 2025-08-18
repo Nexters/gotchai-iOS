@@ -23,7 +23,7 @@ public struct SettingService {
             .request(SettingAPI.signOut) // Void 오버로드
     }
 
-    func delete() -> AnyPublisher<Void, Error> {
-        networkClient.request(SettingAPI.delete)
+    func delete() -> AnyPublisher<String, Error> {
+        networkClient.request(SettingAPI.delete, type: String.self)
     }
 }
