@@ -19,8 +19,8 @@ public struct OnboardingView: View {
   public var body: some View {
     WithViewStore(self.store, observe: { $0 }) { viewStore in
       ZStack {
-        DesignSystemAsset.gray950.swiftUIColor
-          .ignoresSafeArea()
+          Color(.gray_950)
+              .ignoresSafeArea()
 
         VStack {
           HStack {
@@ -29,7 +29,7 @@ public struct OnboardingView: View {
                   Button("건너뛰기") {
                     viewStore.send(.start)
                   }
-                  .foregroundColor(DesignSystemAsset.gray400.swiftUIColor)
+                  .foregroundColor(Color(.gray_400))
                   .padding()
               }
           }
@@ -51,7 +51,7 @@ public struct OnboardingView: View {
                   .cornerRadius(16)
 
                 Text(page.title)
-                  .foregroundColor(DesignSystemAsset.grayWhite.swiftUIColor)
+                  .foregroundColor(Color(.gray_white))
                   .multilineTextAlignment(.center)
                   .padding(.horizontal, 32)
               }
@@ -66,8 +66,8 @@ public struct OnboardingView: View {
               Circle()
                 .fill(
                   idx == viewStore.currentPage ?
-                    DesignSystemAsset.primary400.swiftUIColor :
-                    DesignSystemAsset.gray700.swiftUIColor
+                  Color(.gray_400) :
+                    Color(.gray_700)
                 )
                 .frame(width: 8, height: 8)
             }
@@ -83,7 +83,7 @@ public struct OnboardingView: View {
               .bold()
               .frame(maxWidth: .infinity)
               .padding()
-              .background(DesignSystemAsset.primary400.swiftUIColor)
+              .background(Color(.gray_400))
               .cornerRadius(12)
               .foregroundColor(.black)
           }

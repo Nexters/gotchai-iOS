@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import TCA
+import UIKit
 import SwiftUI
 
 @Reducer
@@ -18,6 +19,7 @@ public struct TuringTestFeature {
         case getTuringTestItem
         case postTuringTestStart
         case submitTuringTest
+        case toastTimer
     }
 
     public init() { }
@@ -27,10 +29,9 @@ public struct TuringTestFeature {
         var turingTestID: Int
         var turingTest: TuringTest
         var resultBadge: ResultBadge?
-
-        public init(turingTestID: Int = -1,
-                    turingTest: TuringTest = .dummy,
-                    resultBadge: ResultBadge? = nil) {
+        var toastMessage: String = ""
+        var showToastMessage: Bool = false
+        public init(turingTestID: Int = -1, turingTest: TuringTest = TuringTest.dummy, resultBadge: ResultBadge? = nil) {
             self.turingTestID = turingTestID
             self.turingTest = turingTest
             self.resultBadge = resultBadge
@@ -55,7 +56,10 @@ public struct TuringTestFeature {
         case tappedBackButton
         case delegate(Delegate)
         case getResultBadge
-
+        case copyPromptButton
+        case hideToast
+        case showToast(String)
+        
         // data
         case getTuringTestResponse(Result<TuringTest, Error>)
         case postTuringTestStartResponse(Result<[Int], Error>)
@@ -154,8 +158,31 @@ public struct TuringTestFeature {
                         .receive(on: RunLoop.main)
                 }
                 .cancellable(id: CancelID.submitTuringTest)
-
-                // MARK: - Action: 데이터 응답 처리
+            
+            case .copyPromptButton:
+                // 프롬프트 복사
+                let prompt = state.turingTest.prompt
+                let copyEffect: Effect<Action> = .run { _ in
+                    await MainActor.run {
+                        UIPasteboard.general.string = prompt
+                    }
+                }
+                
+                let toastEffect = createToastEffect(message: "프롬프트를 복사했어요")
+                
+                return .merge(copyEffect, toastEffect)
+                
+            case .showToast(let message):
+                state.toastMessage = message
+                state.showToastMessage = true
+                return .none
+            
+            case .hideToast:
+                state.toastMessage = ""
+                state.showToastMessage = false
+                return .none
+            
+            // MARK: - Action: 데이터 응답 처리
             case .getTuringTestResponse(let result):
                 switch result {
                 case .success(let turingTest):
@@ -186,5 +213,19 @@ public struct TuringTestFeature {
                 return .none
             }
         }
+    }
+    
+    private func createToastEffect(message: String) -> Effect<TuringTestFeature.Action> {
+        .run { send in
+            // showToast 액션 전송
+            await send(.showToast(message))
+            
+            // 2초 지연
+            try await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+            
+            // hideToast 액션 전송
+            await send(.hideToast)
+        }
+        .cancellable(id: CancelID.toastTimer, cancelInFlight: true)
     }
 }
