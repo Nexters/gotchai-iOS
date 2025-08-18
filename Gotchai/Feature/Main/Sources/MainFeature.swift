@@ -22,7 +22,7 @@ public struct MainFeature {
     public struct State {
         var selectedTab: Tab
 
-        public var profile: ProfileFeature.State = .init()
+        public var profile: ProfileFeature.State = .init(totalTuringTestCount: 0)
 
         var turingTestItems: [TuringTestCard]
         
@@ -80,6 +80,7 @@ public struct MainFeature {
             case let .turingTestListResponse(.success(items)):
                 // 리스트 데이터 저장
                 state.turingTestItems = items
+                state.profile = .init(totalTuringTestCount: items.count)
                 return .none
             case let .turingTestListResponse(.failure(error)):
                 print("테스트 리스트 fetch 실패:", error)

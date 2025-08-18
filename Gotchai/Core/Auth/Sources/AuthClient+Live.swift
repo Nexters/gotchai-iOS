@@ -18,7 +18,6 @@ extension AuthClient: DependencyKey {
                     })
                     .eraseToAnyPublisher()
             },
-            // signOut
             signOut: {
                 Result { () -> AuthProvider in
                     guard let provider = runtime.provider() else { throw AuthError.noActiveProvider }
@@ -33,8 +32,6 @@ extension AuthClient: DependencyKey {
                 }
                 .eraseToAnyPublisher()
             },
-            
-            // deleteUser
             deleteUser: {
                 Result { () -> AuthProvider in
                     guard let provider = runtime.provider() else { throw AuthError.noActiveProvider }

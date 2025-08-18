@@ -15,6 +15,6 @@ public struct BadgeListResponseDTO: Decodable, Equatable, Sendable {
 public struct BadgeDTO: Decodable, Equatable, Sendable {
     public let id: Int
     public let name: String
-    public let image: URL
-    public let acquiredAt: Date
+    public let image: String
+    public let acquiredAt: String
 }

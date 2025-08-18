@@ -6,11 +6,16 @@
 //
 
 import TCA
+import CustomNetwork
 
 extension SolvedTuringTestService: DependencyKey {
     public static let liveValue: SolvedTuringTestService = {
-        SolvedTuringTestService(networkClient: DependencyValues.live.networkClient)
+        SolvedTuringTestService(networkClient: MockNetworkClient())
     }()
+
+    public static func live(_ network: NetworkClient) -> Self {
+        .init(networkClient: network)
+    }
 }
 
 public extension DependencyValues {

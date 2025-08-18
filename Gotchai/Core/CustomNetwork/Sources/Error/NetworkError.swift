@@ -5,7 +5,8 @@
 //  Created by koreamango on 7/20/25.
 //
 
-enum NetworkError: Error {
-    case statusCode(Int)
-    case api(APIError)
+public enum NetworkError: Error {
+    case Unauthorized
+    case RequestError(code: String, message: String)
+    case DecodeError(code: String, message: String)
 }
