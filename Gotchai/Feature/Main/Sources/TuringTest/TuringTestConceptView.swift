@@ -8,6 +8,7 @@
 import TCA
 import DesignSystem
 import SwiftUI
+import Kingfisher
 
 public struct TuringTestConceptView: View {
     @Bindable var store: StoreOf<TuringTestFeature>
@@ -18,11 +19,11 @@ public struct TuringTestConceptView: View {
     
     public var body: some View {
         ZStack {
-            AsyncImage(url: URL(string: store.turingTest.backgroundImageURL), content: { image in
-                image.resizable()
-            }, placeholder: { })
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .ignoresSafeArea()
+            KFImage(URL(string: store.turingTest.backgroundImageURL))
+                .resizable()
+                .placeholder { ProgressView() }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .ignoresSafeArea()
             
             Color(.gray_950).opacity(0.5).ignoresSafeArea()
             

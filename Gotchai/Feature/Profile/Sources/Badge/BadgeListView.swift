@@ -8,6 +8,7 @@
 import DesignSystem
 import TCA
 import SwiftUI
+import Kingfisher
 
 public struct BadgeListView: View {
     let store: StoreOf<BadgeListFeature>
@@ -103,11 +104,10 @@ public struct BadgeListView: View {
         if imageURL == "icon_question" {
             Image(imageURL, bundle: .module)
         } else {
-            AsyncImage(url: URL(string: imageURL)) { image in
-                image.resizable()
-            } placeholder: {
-                ProgressView()
-            }
+            KFImage(URL(string: imageURL))
+                .resizable()
+                .placeholder { ProgressView() }
+                .frame(width: 68, height: 68)
         }
     }
 }

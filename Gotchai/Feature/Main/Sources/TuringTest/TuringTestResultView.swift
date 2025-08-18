@@ -8,6 +8,7 @@
 import DesignSystem
 import SwiftUI
 import TCA
+import Kingfisher
 
 public struct TuringTestResultView: View {
     let store: StoreOf<TuringTestFeature>
@@ -75,13 +76,11 @@ public struct TuringTestResultView: View {
         let countText = count == 7 ? "모두 맞춘 당신은" : "7개 중 \(count)개를 맞춘 당신은"
         
         VStack(spacing: 0) {
-            AsyncImage(url: URL(string: store.resultBadge?.imageURL ?? "")) { image in
-                image.resizable()
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(width: 213, height: 213)
-            .clipShape(Circle())
+            KFImage(URL(string: store.resultBadge?.imageURL ?? ""))
+                .resizable()
+                .placeholder { ProgressView() }
+                .frame(width: 213, height: 213)
+                .clipShape(Circle())
 
             Text(countText)
                 .fontStyle(.body_1)
@@ -135,14 +134,12 @@ public struct TuringTestResultView: View {
                 .foregroundStyle(Color(.primary_300))
             Text("이 프롬프트로 만들었어요")
                 .fontStyle(.subtitle_1)
-            AsyncImage(url: URL(string: store.turingTest.imageURL)) { image in
-                image.resizable()
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(width: 133, height: 133)
-            .clipShape(Circle())
-            .padding(.vertical, 16)
+            KFImage(URL(string: store.turingTest.imageURL))
+                .resizable()
+                .placeholder { ProgressView() }
+                .frame(width: 133, height: 133)
+                .clipShape(Circle())
+                .padding(.vertical, 16)
                 
             Text(store.turingTest.prompt)
                 .fontStyle(.body_4)

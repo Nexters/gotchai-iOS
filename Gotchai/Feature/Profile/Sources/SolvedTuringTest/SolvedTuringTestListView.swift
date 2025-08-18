@@ -8,6 +8,7 @@
 import SwiftUI
 import TCA
 import DesignSystem
+import Kingfisher
 
 public struct SolvedTuringTestListView: View {
     let store: StoreOf<SolvedTuringTestFeature>
@@ -57,12 +58,11 @@ public struct SolvedTuringTestListView: View {
     @ViewBuilder
     private func TestCard(data: SolvedTuringTest) -> some View {
         HStack(spacing: 20) {
-            AsyncImage(url: URL(string: data.iconURL)) { image in
-                image.resizable()
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(width: 44, height: 44)
+            KFImage(URL(string: data.iconURL))
+                .resizable()
+                .placeholder { ProgressView() }
+                .frame(width: 44, height: 44)
+            
             VStack(alignment: .leading, spacing: 2) {
                 Text(data.title)
                     .foregroundStyle(Color(.gray_white))
