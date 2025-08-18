@@ -8,6 +8,7 @@
 import DesignSystem
 import SwiftUI
 import TCA
+import Kingfisher
 
 public struct TuringTestResultView: View {
     let store: StoreOf<TuringTestFeature>

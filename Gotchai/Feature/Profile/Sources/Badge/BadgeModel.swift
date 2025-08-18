@@ -11,11 +11,13 @@ public struct Badge: Equatable {
     let id: Int
     let imageURL: String
     let name: String
+    let acquiredAt: String
 
-    init(id: Int, imageURL: String, name: String) {
+    init(id: Int, imageURL: String, name: String, acquiredAt: String) {
         self.id = id
         self.imageURL = imageURL
         self.name = name
+        self.acquiredAt = acquiredAt
     }
 }
 
@@ -25,8 +27,9 @@ public extension Badge {
         // id는 클라에서 UUID 생성, 서버 id가 필요하면 모델을 바꾸세요
         self.init(
             id: dto.id,
-            imageURL: dto.image.absoluteString,
-            name: dto.name
+            imageURL: dto.image,
+            name: dto.name,
+            acquiredAt: dto.acquiredAt
         )
     }
 }

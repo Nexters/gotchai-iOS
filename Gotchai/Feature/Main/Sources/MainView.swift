@@ -9,6 +9,7 @@ import TCA
 import DesignSystem
 import SwiftUI
 import Profile
+import Kingfisher
 
 public struct MainView: View {
     let store: StoreOf<MainFeature>
@@ -100,18 +101,14 @@ public struct MainView: View {
     @ViewBuilder
     private func TestCardItem(item: TuringTestCard) -> some View {
         HStack(spacing: 16) {
-            // TODO: 이미지 캐시
             ZStack {
-                AsyncImage(url: URL(string: item.imageURL)) { image in
-                    image.resizable()
-                } placeholder: {
-                    ProgressView()
-                }
-                .frame(width: 56, height: 56)
-                .padding(12)
-                .background(
-                    Circle().fill(Color(.gray_900))
-                )
+                KFImage(URL(string: item.imageURL))
+                    .resizable()
+                    .placeholder { ProgressView() }
+                    .frame(width: 56, height: 56)
+                    .padding(12)
+                    .background(Circle().fill(Color(.gray_900)))
+                
                 if item.isSolved {
                     Text("풀기완료")
                         .fontStyle(.body_6)
@@ -120,7 +117,6 @@ public struct MainView: View {
                         .padding(.horizontal, 8)
                         .background(Color(.gray_700))
                         .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .padding(.bottom, 2)
                 }
             }
 
@@ -132,8 +128,8 @@ public struct MainView: View {
                     .fontStyle(.body_4)
                     .foregroundStyle(Color(.gray_400))
             }
-            Spacer()
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(10)
         .background(
             RoundedRectangle(cornerRadius: 20)

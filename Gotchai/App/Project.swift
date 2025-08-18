@@ -20,6 +20,8 @@ let project = Project(
                     "UIColorName": "launch_color"
                 ],
                 "NSPhotoLibraryAddUsageDescription": "배지를 사진 앨범에 저장하려고 합니다."
+                "CFBundleShortVersionString": "$(MARKETING_VERSION)",
+                "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)"
             ]),
             sources: ["Sources/**"],
             resources: ["Resources/**"],

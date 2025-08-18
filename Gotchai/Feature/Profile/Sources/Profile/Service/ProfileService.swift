@@ -8,14 +8,14 @@
 import CustomNetwork
 import Combine
 
-struct ProfileService {
+public struct ProfileService {
     private let networkClient: NetworkClient
     
-    init(networkClient: NetworkClient) {
+    public init(networkClient: NetworkClient) {
         self.networkClient = networkClient
     }
     
-    func getRanking() -> AnyPublisher<Profile, Error> {
+    public func getRanking() -> AnyPublisher<Profile, Error> {
         networkClient
             .request(ProfileAPI.getRanking, type: RankingResponseDTO.self)
             .map { dto in

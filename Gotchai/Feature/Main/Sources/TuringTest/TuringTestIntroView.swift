@@ -8,6 +8,7 @@
 import TCA
 import DesignSystem
 import SwiftUI
+import Kingfisher
 
 public struct TuringTestIntroView: View {
     let store: StoreOf<TuringTestFeature>
@@ -18,12 +19,10 @@ public struct TuringTestIntroView: View {
     
     public var body: some View {
         VStack(spacing: 0) {
-            AsyncImage(url: URL(string: store.turingTest.iconURL)) { image in
-                image.resizable()
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(width: 40, height: 40)
+            KFImage(URL(string: store.turingTest.iconURL))
+                .resizable()
+                .placeholder { ProgressView() }
+                .frame(width: 40, height: 40)
             
             Text(store.turingTest.title)
                 .fontStyle(.title_2)
@@ -40,25 +39,20 @@ public struct TuringTestIntroView: View {
                 .foregroundStyle(Color(.gray_300))
                 .padding(.top, 24)
             
-            AsyncImage(url: URL(string: store.turingTest.imageURL)) { image in
-                image.resizable()
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(width: 305, height: 305)
-            .background(
-                Circle().fill(Color(.gray_800))
-            )
-            .padding(.top, 44)
+            KFImage(URL(string: store.turingTest.imageURL))
+                .resizable()
+                .placeholder { ProgressView() }
+                .frame(width: 305, height: 305)
+                .background(Circle().fill(Color(.gray_800)))
+                .padding(.top, 44)
             
-            VStack(spacing: 12) {
-                CTAButton(text: "시작하기") {
-                    store.send(.tappedStartButton)
-                }
-                ShareButton()
+            Spacer()
+            
+            CTAButton(text: "시작하기") {
+                store.send(.tappedStartButton)
             }
-            .padding(.top, 52)
             .padding(.horizontal, 24)
+            .padding(.bottom, 10)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.gray_950))
@@ -78,18 +72,6 @@ public struct TuringTestIntroView: View {
         .navigationBarBackButtonHidden()
     }
     
-    @ViewBuilder
-    private func ShareButton() -> some View {
-        Button {
-            store.send(.tappedTestShareButton)
-        } label: {
-            Text("테스트 공유하기")
-                .fontStyle(.body_3)
-                .foregroundStyle(Color(.gray_200))
-                .padding(.vertical, 15)
-                .frame(maxWidth: .infinity)
-        }
-    }
 }
 
 #Preview {

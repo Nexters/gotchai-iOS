@@ -10,6 +10,7 @@ import Auth
 import Foundation
 import Combine
 import Key
+import SwiftUI
 
 @Reducer
 public struct SettingFeature {
@@ -38,15 +39,17 @@ public struct SettingFeature {
     public enum Action: Equatable {
         case tappedBackButton
         case tappedGetFeedbackButton
-        case tappedTermsButton
-        case tappedPolicyButton
         case logout
         case logoutSucceeded
         case logoutFailed(String)
         case delete
+        case deleteSucceeded
+        case deleteFailed(String)
         case showPopUp(SettingPopUpType)
         case setIsPresentedPopUp(Bool)  // 바인딩용
         case delegate(Delegate)
+        
+        case failed(String)
     }
 
     public var body: some ReducerOf<Self> {
@@ -64,46 +67,61 @@ public struct SettingFeature {
                 state.isPresentedPopUp = flag
                 return .none
 
+            // MARK: - 로그아웃
             case .logout:
+                // 서버에 세션 종료 통보
                 return .publisher {
-                    authClient.signOut()
-                        .map { _ in .logoutSucceeded }    // 성공 시 액션 변환
-                        .catch { error in                 // 실패 시 액션 변환
-                            Just(.logoutFailed(error.localizedDescription))
-                        }
-                        .receive(on: DispatchQueue.main)  // UI 업데이트 안전
+                  settingService.signOut()
+                    .map { _ in .logoutSucceeded }
+                    .catch { Just(.logoutFailed($0.localizedDescription)) }
+                    .receive(on: DispatchQueue.main)
                 }
 
             case .logoutSucceeded:
                 // 로컬 토큰/세션 정리(필요 시)
                 tokenProvider.accessToken = nil
-                state.isPresentedPopUp = false
                 state.popUpType = nil
 
                 return .publisher {
-                  settingService.signOut()    // 서버에 세션 종료 통보
-                    .map { _ in .delegate(.didLogout) }
-                    .catch { _ in Just(.delegate(.didLogout)) } // 실패해도 UX 진행
-                    .receive(on: DispatchQueue.main)
+                    authClient.signOut()
+                        .map { _ in .delegate(.didLogout) }    // 성공 시 액션 변환
+                        .catch { Just(.failed($0.localizedDescription)) }
+                        .receive(on: DispatchQueue.main)  // UI 업데이트 안전
                 }
 
             case .logoutFailed(let message):
-                state.isPresentedPopUp = false
                 print("로그아웃 실패: \(message)")
                 return .none
 
+            // MARK: - 탈퇴
             case .delete:
-                tokenProvider.accessToken = nil
-                state.isPresentedPopUp = false
-                state.popUpType = nil
-
+                // 서버에  요청 
                 return .publisher {
-                  settingService.delete()    // 서버에 세션 종료 통보
-                    .map { _ in .delegate(.didLogout) }
-                    .catch { _ in Just(.delegate(.didLogout)) } // 실패해도 UX 진행
+                  settingService.delete()
+                    .map { _ in .deleteSucceeded }
+                    .catch { Just(.deleteFailed($0.localizedDescription)) }
                     .receive(on: DispatchQueue.main)
                 }
+                
+            case .deleteSucceeded:
+                // 로컬 처리
+                tokenProvider.accessToken = nil
+                state.popUpType = nil
+                
+                return .publisher {
+                    authClient.deleteUser()
+                        .map { _ in .delegate(.didLogout) }    // 성공 시 액션 변환
+                        .catch { Just(.failed($0.localizedDescription)) }
+                        .receive(on: DispatchQueue.main)  // UI 업데이트 안전
+                }
 
+            case .deleteFailed(let error):
+                print("회원탈퇴 실패: \(error)")
+                return .none
+                
+            case .failed(let error):
+                print("Failed: \(error)")
+                return .none
             default: return .none
             }
         }

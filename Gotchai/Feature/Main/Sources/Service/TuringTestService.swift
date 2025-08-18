@@ -9,10 +9,10 @@ import Combine
 import CustomNetwork
 import UIKit
 
-struct TuringTestService {
+public struct TuringTestService {
     private let networkClient: NetworkClient
-
-    init(networkClient: NetworkClient) {
+    
+    public init(networkClient: NetworkClient) {
         self.networkClient = networkClient
     }
 

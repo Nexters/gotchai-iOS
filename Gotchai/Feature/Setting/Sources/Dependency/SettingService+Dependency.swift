@@ -6,11 +6,16 @@
 //
 
 import TCA
+import CustomNetwork
 
 extension SettingService: DependencyKey {
     public static let liveValue: SettingService = {
-        SettingService(networkClient: DependencyValues.live.networkClient)
+        SettingService(networkClient: MockNetworkClient())
     }()
+
+    public static func live(_ network: NetworkClient) -> Self {
+        .init(networkClient: network)
+    }
 }
 
 public extension DependencyValues {

@@ -10,7 +10,7 @@ let project = Project(
             destinations: .iOS,
             product: .framework,
             bundleId: "com.gotchai.auth",
-            infoPlist: "Info.plist",
+            infoPlist: .default,
             sources: ["Sources/**"],
             entitlements: "../../App/Gotchai.entitlements",
             dependencies: [
@@ -18,6 +18,8 @@ let project = Project(
                 .external(name: "KakaoSDKAuth"),
                 .external(name: "KakaoSDKUser"),
                 .project(target: "TCA", path: .relativeToRoot("Gotchai/Core/Third/TCA")),
+                .project(target: "CustomNetwork", path: .relativeToRoot("Gotchai/Core/CustomNetwork")),
+                .project(target: "Common", path: .relativeToRoot("Gotchai/Core/Common")),
             ]
         )
     ]

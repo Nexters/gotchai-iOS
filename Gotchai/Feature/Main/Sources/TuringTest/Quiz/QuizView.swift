@@ -8,6 +8,7 @@
 import TCA
 import DesignSystem
 import SwiftUI
+import Kingfisher
 
 public struct QuizView: View {
     let store: StoreOf<QuizFeature>
@@ -54,9 +55,16 @@ public struct QuizView: View {
                 
                 Spacer()
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding(.horizontal, 24)
-            .background(Color(.gray_950))
+            .background(
+                ZStack {
+                    KFImage(URL(string: viewStore.backgroundImageURL))
+                        .resizable()
+                        .placeholder { ProgressView() }
+                        .blur(radius: 90)
+                    Color(.gray_black).opacity(0.7)
+                }.ignoresSafeArea()
+            )
             .navigationBarBackButtonHidden()
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
