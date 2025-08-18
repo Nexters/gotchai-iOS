@@ -11,6 +11,7 @@ import TCA
 
 public struct SettingView: View {
     let store: StoreOf<SettingFeature>
+    @Environment(\.openURL) var openURL
     
     public init(store: StoreOf<SettingFeature>) {
         self.store = store
@@ -37,9 +38,9 @@ public struct SettingView: View {
                 )
                 
                 VStack(spacing: 8) {
-                    ItemCard(image: "icon_feedback", text: "문의하기", action: .tappedGetFeedbackButton)
-                    ItemCard(image: "icon_notes", text: "이용약관", action: .tappedTermsButton)
-                    ItemCard(image: "icon_safe", text: "개인정보 처리방침", action: .tappedPolicyButton)
+                    ItemCard(image: "icon_feedback", text: "문의하기", link: "https://forms.gle/bWFFvVC1iyTSRuGP6")
+                    ItemCard(image: "icon_notes", text: "이용약관", link: "https://pretty-icicle-cfc.notion.site/gotchai2")
+                    ItemCard(image: "icon_safe", text: "개인정보 처리방침", link: "https://pretty-icicle-cfc.notion.site/gotchai")
                     
                     Spacer()
                     
@@ -87,7 +88,7 @@ public struct SettingView: View {
     }
     
     @ViewBuilder
-    private func ItemCard(image: String, text: String, action: SettingFeature.Action) -> some View {
+    private func ItemCard(image: String, text: String, link: String) -> some View {
         HStack(spacing: 12) {
             Image(image, bundle: .module)
             Text(text)
@@ -95,7 +96,9 @@ public struct SettingView: View {
                 .foregroundStyle(Color(.gray_white))
             Spacer()
             Button {
-                store.send(action)
+                if let url = URL(string: link) {
+                    openURL(url)
+                }
             } label: {
                 Image("arrow_right", bundle: .module)
                     .padding(.vertical, 8)

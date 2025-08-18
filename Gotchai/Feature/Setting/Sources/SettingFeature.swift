@@ -10,6 +10,7 @@ import Auth
 import Foundation
 import Combine
 import Key
+import SwiftUI
 
 @Reducer
 public struct SettingFeature {
@@ -38,8 +39,6 @@ public struct SettingFeature {
     public enum Action: Equatable {
         case tappedBackButton
         case tappedGetFeedbackButton
-        case tappedTermsButton
-        case tappedPolicyButton
         case logout
         case logoutSucceeded
         case logoutFailed(String)

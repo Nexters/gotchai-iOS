@@ -117,7 +117,6 @@ public struct MainView: View {
                         .padding(.horizontal, 8)
                         .background(Color(.gray_700))
                         .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .padding(.bottom, 2)
                 }
             }
 
@@ -129,8 +128,8 @@ public struct MainView: View {
                     .fontStyle(.body_4)
                     .foregroundStyle(Color(.gray_400))
             }
-            Spacer()
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(10)
         .background(
             RoundedRectangle(cornerRadius: 20)

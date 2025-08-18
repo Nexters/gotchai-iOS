@@ -20,31 +20,33 @@ public struct ProfileView: View {
     }
 
     public var body: some View {
-        VStack(spacing: 12) {
-            Image("profile_default", bundle: .module)
-            Text(store.profile.nickname)
-                .fontStyle(.body_4)
-                .foregroundStyle(Color(.gray_white))
-                .padding(.vertical, 6)
-                .padding(.horizontal, 16)
-                .background(
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 50)
-                            .fill(Color(hex: "1E2803"))
-                        RoundedRectangle(cornerRadius: 50)
-                            .stroke(Color(.primary_600), lineWidth: 0.5)
-                    }
-                )
-            
-            RankCard()
-                .padding(.top, 12)
-            MyBadgeCard()
-            MyTestCard()
+        ScrollView {
+            VStack(spacing: 12) {
+                Image("profile_default", bundle: .module)
+                Text(store.profile.nickname)
+                    .fontStyle(.body_4)
+                    .foregroundStyle(Color(.gray_white))
+                    .padding(.vertical, 6)
+                    .padding(.horizontal, 16)
+                    .background(
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 50)
+                                .fill(Color(hex: "1E2803"))
+                            RoundedRectangle(cornerRadius: 50)
+                                .stroke(Color(.primary_600), lineWidth: 0.5)
+                        }
+                    )
+                
+                RankCard()
+                    .padding(.top, 12)
+                MyBadgeCard()
+                MyTestCard()
+            }
+            .padding(24)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.gray_950))
+            .onAppear { store.send(.onAppear) }
         }
-        .padding(.horizontal, 24)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.gray_950))
-        .onAppear { store.send(.onAppear) }
     }
     
     
@@ -88,6 +90,7 @@ public struct ProfileView: View {
                 Rectangle()
                     .frame(height: 1)
                     .foregroundStyle(Color(.gray_500))
+                    .opacity(0.4)
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(badge.name)

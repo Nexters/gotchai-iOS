@@ -63,7 +63,7 @@ public struct SolvedTuringTestListView: View {
                 .placeholder { ProgressView() }
                 .frame(width: 44, height: 44)
             
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(data.title)
                     .foregroundStyle(Color(.gray_white))
                 Text("\(data.totalQuizCount)개 중 \(data.correctCount)개 맞췄어요")
