@@ -49,11 +49,14 @@ struct AppFeature {
             switch action {
                 // 앱이 켜지면 자동 로그인 시도
             case .appLaunched:
+                authClient.deleteUser()
+                    
                 return .publisher {
                   authClient.signIn(autoAuthProvider)
                     .map { .signInResponse(.success($0)) }
                     .catch { Just(.signInResponse(.failure($0))) }
                 }
+            
             case let .signInResponse(.success(session)):
                 print("자동 로그인 성공")
               state.root = session.token.isEmpty ? .onboarding : .main
