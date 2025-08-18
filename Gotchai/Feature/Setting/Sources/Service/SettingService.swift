@@ -24,6 +24,8 @@ public struct SettingService {
     }
 
     func delete() -> AnyPublisher<String, Error> {
-        networkClient.request(SettingAPI.delete, type: String.self)
+        networkClient.request(SettingAPI.delete, type: DeleteResponseDTO.self)
+            .map { $0.message }
+            .eraseToAnyPublisher()
     }
 }
