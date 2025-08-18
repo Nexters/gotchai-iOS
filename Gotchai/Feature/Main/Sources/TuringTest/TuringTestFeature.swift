@@ -138,11 +138,12 @@ public struct TuringTestFeature {
 
             case .tappedSaveBadgeButton:
                 guard let badge = state.resultBadge else { return .none }
+
                 var gradientStops = GradientHelper.getGradientStops(
                     for: badge.tier
                 )
 
-                return .run { _ in
+                let saveEffect: Effect<Action> = .run { _ in
                     if let uiImage = await BadgeCardView(
                         badge: badge,
                         badgeLinearBackground: gradientStops.badgeLinearBackground,
@@ -151,6 +152,11 @@ public struct TuringTestFeature {
                         savePNGToPhotos(uiImage)
                     }
                 }
+
+                let toastEffect = createToastEffect(message: "이미지를 저장했어요")
+
+                return .merge(saveEffect, toastEffect)
+
 
             case .getResultBadge:
                 return .publisher {
