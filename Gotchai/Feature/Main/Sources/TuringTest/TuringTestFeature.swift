@@ -45,7 +45,6 @@ public struct TuringTestFeature {
         case onAppearIntroView
         
         // view
-        case tappedTestShareButton
         case tappedStartButton
         case tappedNextButton
         case tappedBackButton
@@ -85,8 +84,7 @@ public struct TuringTestFeature {
                         .receive(on: RunLoop.main)
                 }
                 .cancellable(id: CancelID.postTuringTestStart)
-            case .tappedTestShareButton:
-                return .none
+                
             case .getResultBadge:
                 return .publisher {
                     turingTestService.submitTest(.submitTest(state.turingTestID))
