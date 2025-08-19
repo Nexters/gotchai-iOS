@@ -13,12 +13,14 @@ struct BadgeCardView: View {
     let badgeLinearBackground: [Gradient.Stop]
     let badgeRadialBackground: [Gradient.Stop]
     let backgroundColor: Color?
+    let isInstagram: Bool
     
-    init(badge: ResultBadge?, badgeLinearBackground: [Gradient.Stop], badgeRadialBackground: [Gradient.Stop], backgroundColor: Color? = .clear) {
+    init(badge: ResultBadge?, badgeLinearBackground: [Gradient.Stop], badgeRadialBackground: [Gradient.Stop], backgroundColor: Color? = .clear, isInstagram: Bool = false) {
         self.badge = badge
         self.badgeLinearBackground = badgeLinearBackground
         self.badgeRadialBackground = badgeRadialBackground
         self.backgroundColor = backgroundColor
+        self.isInstagram = isInstagram
     }
 
     var body: some View {
@@ -60,8 +62,8 @@ struct BadgeCardView: View {
             }
         )
         .clipShape(RoundedRectangle(cornerRadius: 24))
+        .padding(.horizontal, isInstagram ? 0 : 36)
     }
-    
     
     @ViewBuilder
     private func badgeCard(badge: ResultBadge, colors: BadgeColor) -> some View {

@@ -110,9 +110,12 @@ public struct TuringTestFeature {
                 let gradientStops = GradientHelper.getGradientStops(for: badge.tier)
                 let backgroundColors = GradientHelper.getColors(for: badge.tier).mainBackground
 
-                if let uiImage = BadgeCardView(badge: badge,
-                                               badgeLinearBackground: gradientStops.badgeLinearBackground,
-                                               badgeRadialBackground: gradientStops.badgeRadialBackground ).snapshot() {
+                if let uiImage = BadgeCardView(
+                    badge: badge,
+                    badgeLinearBackground: gradientStops.badgeLinearBackground,
+                    badgeRadialBackground: gradientStops.badgeRadialBackground,
+                    isInstagram: true).snapshot() {
+                    
                     let imageData = uiImage.pngData()
 
                     // 1) Pasteboard

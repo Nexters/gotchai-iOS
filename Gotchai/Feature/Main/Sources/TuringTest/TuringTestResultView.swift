@@ -32,8 +32,8 @@ public struct TuringTestResultView: View {
                 VStack(spacing: 24) {
                     BadgeCard()
                     PromptCard()
+                        .padding(.horizontal, 36)
                 }
-                .padding(.horizontal, 36)
                 .padding(.bottom, 126)
                 .padding(.top, 68)
             }
