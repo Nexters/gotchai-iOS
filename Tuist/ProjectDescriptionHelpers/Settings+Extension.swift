@@ -19,8 +19,8 @@ public extension Settings {
                 "CURRENT_PROJECT_VERSION": "4"
             ],
             configurations: [
-                .debug(name: "Debug", xcconfig: .relativeToRoot("Tuist/Configurations/Config.xcconfig")),
-                .release(name: "Release", xcconfig: .relativeToRoot("Tuist/Configurations/Config.xcconfig"))
+                .debug(name: "Debug", xcconfig: .relativeToRoot("Tuist/Configurations/Debug.xcconfig")),
+                .release(name: "Release", xcconfig: .relativeToRoot("Tuist/Configurations/Release.xcconfig"))
             ]
         )
     }
