@@ -16,7 +16,7 @@ public extension Settings {
                 
                 // version
                 "MARKETING_VERSION": "1.0.0",
-                "CURRENT_PROJECT_VERSION": "2"
+                "CURRENT_PROJECT_VERSION": "3"
             ],
             configurations: [
                 .debug(name: "Debug", xcconfig: .relativeToRoot("Tuist/Configurations/Config.xcconfig")),
