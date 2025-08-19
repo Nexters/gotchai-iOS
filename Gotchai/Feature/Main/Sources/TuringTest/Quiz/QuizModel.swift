@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 public struct Quiz: Equatable {
     let id: Int
@@ -28,9 +29,21 @@ public struct AnswerPopUp: Equatable {
 }
 
 public struct ResultBadge {
-    let imageURL: String
+    let image: UIImage?
     let badgeName: String
     let description: String
     let tier: GradientTheme
     let correctCount: Int
+}
+
+extension ResultBadge {
+    public static var dummy: ResultBadge {
+        .init(
+            image: nil,
+            badgeName: "🎄",
+            description: "🎄",
+            tier: .bronze,
+            correctCount: 10
+        )
+    }
 }

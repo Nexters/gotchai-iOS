@@ -17,7 +17,8 @@ let project = Project(
                 .project(target: "DesignSystem", path: "../../Shared/DesignSystem"),
                 .project(target: "Profile", path: .relativeToRoot("Gotchai/Feature/Profile")),
                 .project(target: "CustomNetwork", path: .relativeToRoot("Gotchai/Core/CustomNetwork")),
-                .external(name: "Kingfisher")
+                .external(name: "Kingfisher"),
+                .project(target: "Common", path: .relativeToRoot("Gotchai/Core/Common")),
             ]
         )
     ]

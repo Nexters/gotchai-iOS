@@ -11,6 +11,7 @@ let project = Project(
             product: .app,
             bundleId: "com.gotchai.Gotchai",
             infoPlist: .extendingDefault(with: [
+                "META_KEY": "$(META_KEY)",
                 "KAKAO_NATIVE_APP_KEY": "$(KAKAO_NATIVE_APP_KEY)",
                 "BASE_SCHEME": "$(BASE_SCHEME)",
                 "BASE_HOST": "$(BASE_HOST)",
@@ -18,8 +19,13 @@ let project = Project(
                     "UIImageName": "launch_logo",
                     "UIColorName": "launch_color"
                 ],
+                "NSPhotoLibraryAddUsageDescription": "배지를 사진 앨범에 저장하려고 합니다.",
                 "CFBundleShortVersionString": "$(MARKETING_VERSION)",
-                "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)"
+                "CFBundleVersion": "$(CURRENT_PROJECT_VERSION)",
+                "LSApplicationQueriesSchemes": [
+                    "instagram",
+                   "instagram-stories"
+                ]
             ]),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
