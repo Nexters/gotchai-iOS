@@ -87,26 +87,28 @@ public struct ProfileView: View {
                 .padding(.bottom, store.lastBadge == nil ? 12 : 8)
             }
             
-            if let badge = store.lastBadge {
-                Rectangle()
-                    .frame(height: 1)
-                    .foregroundStyle(Color(.gray_500))
-                    .opacity(0.4)
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(badge.name)
-                        Text("\(DateManager.shared.parseISO(badge.acquiredAt))에 획득")
-                            .fontStyle(.body_6)
-                            .foregroundStyle(Color(.gray_500))
+            WithViewStore(store, observe: \.lastBadge) { vs in
+                if let badge = vs.state {
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundStyle(Color(.gray_500))
+                        .opacity(0.4)
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(badge.name)
+                            Text("\(DateManager.shared.parseISO(badge.acquiredAt))에 획득")
+                                .fontStyle(.body_6)
+                                .foregroundStyle(Color(.gray_500))
+                        }
+                        Spacer()
+                        KFImage(URL(string: badge.imageURL))
+                            .resizable()
+                            .placeholder { ProgressView() }
+                            .frame(width: 95, height: 95)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
-                    Spacer()
-                    KFImage(URL(string: badge.imageURL))
-                        .resizable()
-                        .placeholder { ProgressView() }
-                        .frame(width: 95, height: 95)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .padding(.vertical, 20)
                 }
-                .padding(.vertical, 20)
             }
         }
         .fontStyle(.body_2)

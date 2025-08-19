@@ -22,7 +22,7 @@ public struct MainFeature {
     public struct State {
         var selectedTab: Tab
 
-        public var profile: ProfileFeature.State = .init(totalTuringTestCount: 0)
+        public var profile = ProfileFeature.State()
 
         var turingTestItems: [TuringTestCard]
         

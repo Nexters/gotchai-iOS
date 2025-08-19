@@ -48,8 +48,7 @@ public struct MainView: View {
                         }
                     case .achievement:
                         ProfileView(
-                            store: store
-                                .scope(state: \.profile, action: \.profile)
+                            store: store.scope(state: \.profile, action: \.profile)
                         )
                         Spacer()
                     }

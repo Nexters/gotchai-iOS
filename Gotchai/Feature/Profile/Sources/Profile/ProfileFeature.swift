@@ -26,10 +26,9 @@ public struct ProfileFeature {
         var profile: Profile
         var lastBadge: Badge?
         
-        public init(totalTuringTestCount: Int, profile: Profile = Profile(nickname: "닉네임", rating: 50), lastBadge: Badge? = nil) {
-            self.totalTuringTestCount = totalTuringTestCount
+        public init(totalTuringTestCount: Int? = 0, profile: Profile = Profile(nickname: "닉네임", rating: 50)) {
+            self.totalTuringTestCount = totalTuringTestCount ?? 0
             self.profile = profile
-            self.lastBadge = lastBadge
         }
     }
 
