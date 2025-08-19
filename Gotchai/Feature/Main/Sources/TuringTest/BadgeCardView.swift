@@ -71,7 +71,7 @@ struct BadgeCardView: View {
             if let uiImage = badge.image {
                 Image(uiImage: uiImage)
                     .resizable()
-                    .frame(width: 213, height: 213)
+                    .frame(width: 250, height: 250)
                     .clipShape(Circle())
             }
 

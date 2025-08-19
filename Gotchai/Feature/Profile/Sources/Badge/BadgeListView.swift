@@ -107,7 +107,7 @@ public struct BadgeListView: View {
             KFImage(URL(string: imageURL))
                 .resizable()
                 .placeholder { ProgressView() }
-                .frame(width: 68, height: 68)
+                .frame(width: 90, height: 90)
         }
     }
 }
