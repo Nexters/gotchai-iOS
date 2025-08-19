@@ -32,9 +32,7 @@ struct BadgeCardView: View {
                 badgeCard(badge: badge, colors: badgeCardColor)
                 
             } else {
-                VStack {
-                    ProgressView().frame(maxHeight: .infinity)
-                }
+                ProgressView()
             }
         }
         .padding([.horizontal, .top], 34)
