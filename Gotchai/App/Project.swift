@@ -25,7 +25,11 @@ let project = Project(
                 "LSApplicationQueriesSchemes": [
                     "instagram",
                    "instagram-stories"
-                ]
+                ],
+                "CFBundleDisplayName": .string("Gotchai"),
+                "UISupportedInterfaceOrientations": .array([
+                    .string("UIInterfaceOrientationPortrait")
+                ])
             ]),
             sources: ["Sources/**"],
             resources: ["Resources/**"],
