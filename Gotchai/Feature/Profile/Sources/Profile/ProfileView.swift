@@ -72,19 +72,20 @@ public struct ProfileView: View {
     @ViewBuilder
     private func MyBadgeCard() -> some View {
         VStack(spacing: 0) {
-            HStack(spacing: 8) {
-                Image("icon_badge", bundle: .module)
-                Text("내 배지")
-                Spacer()
-                Button {
-                    store.send(.tappedBadgeComponent)
-                } label: {
+            Button {
+                store.send(.tappedBadgeComponent)
+            } label: {
+                HStack(spacing: 8) {
+                    Image("icon_badge", bundle: .module)
+                    Text("내 배지")
+                    Spacer()
+                    
                     Image("arrow_right", bundle: .module)
                         .padding(.vertical, 8)
                         .padding(.leading, 14)
                 }
+                .padding(.bottom, store.lastBadge == nil ? 12 : 8)
             }
-            .padding(.bottom, store.lastBadge == nil ? 12 : 8)
             
             if let badge = store.lastBadge {
                 Rectangle()
@@ -118,26 +119,26 @@ public struct ProfileView: View {
     
     @ViewBuilder
     private func MyTestCard() -> some View {
-        HStack(spacing: 8) {
-            Image("icon_history", bundle: .module)
-            Text("내가 풀었던 테스트")
-                .fontStyle(.body_2)
-                .foregroundStyle(Color(.gray_white))
-            
-            Spacer()
-            
-            Button {
-                store.send(.tappedSolvedTuringTestComponent)
-            } label: {
+        Button {
+            store.send(.tappedSolvedTuringTestComponent)
+        } label: {
+            HStack(spacing: 8) {
+                Image("icon_history", bundle: .module)
+                Text("내가 풀었던 테스트")
+                    .fontStyle(.body_2)
+                    .foregroundStyle(Color(.gray_white))
+                
+                Spacer()
+                
                 Image("arrow_right", bundle: .module)
                     .padding(.vertical, 8)
                     .padding(.leading, 14)
             }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(Color(.gray_900))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 12)
-        .background(Color(.gray_900))
-        .clipShape(RoundedRectangle(cornerRadius: 20))
     }
     
     private var rankImage: String {
