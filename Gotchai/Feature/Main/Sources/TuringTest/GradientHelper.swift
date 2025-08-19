@@ -70,7 +70,7 @@ struct GradientHelper {
         }
     }
     
-    private static func getColors(for theme: GradientTheme) -> ColorPalette {
+    static func getColors(for theme: GradientTheme) -> ColorPalette {
         switch theme {
         case .gold:
             return ColorPalette(

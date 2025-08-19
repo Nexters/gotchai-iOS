@@ -105,9 +105,8 @@ public struct TuringTestFeature {
                                                 "instagram-stories://share?source_application=" +
                                              key) else { return .none }
 
-                var gradientStops = GradientHelper.getGradientStops(
-                    for: badge.tier
-                )
+                let gradientStops = GradientHelper.getGradientStops(for: badge.tier)
+                let backgroundColors = GradientHelper.getColors(for: badge.tier).mainBackground
 
                 if let uiImage = BadgeCardView(badge: badge,
                                                badgeLinearBackground: gradientStops.badgeLinearBackground,
@@ -116,9 +115,9 @@ public struct TuringTestFeature {
 
                     // 1) Pasteboard
                     let items: [String: Any] = [
-                        "com.instagram.sharedSticker.stickerImage": imageData,
-                        "com.instagram.sharedSticker.backgroundTopColor": "#FC5555",
-                        "com.instagram.sharedSticker.backgroundBottomColor": "#176AB7"
+                        "com.instagram.sharedSticker.stickerImage": imageData ?? Data(),
+                        "com.instagram.sharedSticker.backgroundTopColor": "#\(backgroundColors.first ?? "1D1E22")",
+                        "com.instagram.sharedSticker.backgroundBottomColor": "#\(backgroundColors.last ?? "1D1E22")"
                     ]
                     UIPasteboard.general.setItems([items], options: [
                         .expirationDate: Date().addingTimeInterval(300) // 5분 유효(선택)
