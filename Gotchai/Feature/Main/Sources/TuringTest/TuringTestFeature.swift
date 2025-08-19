@@ -148,9 +148,7 @@ public struct TuringTestFeature {
             case .tappedSaveBadgeButton:
                 guard let badge = state.resultBadge else { return .none }
 
-                var gradientStops = GradientHelper.getGradientStops(
-                    for: badge.tier
-                )
+                let gradientStops = GradientHelper.getGradientStops(for: badge.tier)
 
                 let saveEffect: Effect<Action> = .run { _ in
                     if let uiImage = await BadgeCardView(
