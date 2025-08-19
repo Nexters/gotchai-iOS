@@ -130,6 +130,7 @@ public struct QuizView: View {
                 .fontStyle(.body_4)
                 .foregroundStyle(Color(.gray_white))
                 .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 20)
