@@ -12,6 +12,14 @@ struct BadgeCardView: View {
     let badge: ResultBadge?
     let badgeLinearBackground: [Gradient.Stop]
     let badgeRadialBackground: [Gradient.Stop]
+    let backgroundColor: Color?
+    
+    init(badge: ResultBadge?, badgeLinearBackground: [Gradient.Stop], badgeRadialBackground: [Gradient.Stop], backgroundColor: Color? = .clear) {
+        self.badge = badge
+        self.badgeLinearBackground = badgeLinearBackground
+        self.badgeRadialBackground = badgeRadialBackground
+        self.backgroundColor = backgroundColor
+    }
 
     var body: some View {
         
@@ -30,6 +38,7 @@ struct BadgeCardView: View {
         .padding([.horizontal, .top], 34)
         .padding(.bottom, 27)
         .frame(maxWidth: .infinity, minHeight: 481)
+        .background(backgroundColor)
         .gradientBackground(
             stops: badgeLinearBackground,
             startPoint: .topLeading,

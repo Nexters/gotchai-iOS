@@ -96,6 +96,8 @@ public struct TuringTestFeature {
                         .receive(on: RunLoop.main)
                 }
                 .cancellable(id: CancelID.postTuringTestStart)
+                
+            // MARK: - 배지 인스타 공유
             case .tappedTestShareButton:
                 guard let badge = state.resultBadge else { return .none }
                 guard let key = Bundle.main.object(forInfoDictionaryKey: "META_KEY") as? String else {
@@ -144,6 +146,7 @@ public struct TuringTestFeature {
 
                 return .none
 
+            // MARK: - 이미지 저장
             case .tappedSaveBadgeButton:
                 guard let badge = state.resultBadge else { return .none }
 
@@ -153,7 +156,8 @@ public struct TuringTestFeature {
                     if let uiImage = await BadgeCardView(
                         badge: badge,
                         badgeLinearBackground: gradientStops.badgeLinearBackground,
-                        badgeRadialBackground: gradientStops.badgeRadialBackground
+                        badgeRadialBackground: gradientStops.badgeRadialBackground,
+                        backgroundColor: Color(.gray_950)
                     ).snapshot() {
                         savePNGToPhotos(uiImage)
                     }
