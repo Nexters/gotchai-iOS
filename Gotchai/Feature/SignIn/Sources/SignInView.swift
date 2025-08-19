@@ -33,6 +33,21 @@ public struct SignInView: View {
                 Spacer(minLength: 300)
                 VStack(spacing: 16) {
                     Button {
+                        viewStore.send(.tappedAppleLogin)
+                    } label: {
+                        HStack {
+                            Image(systemName: "apple.logo")
+                            Text("Apple로 시작하기")
+                                .fontStyle(.body_2)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 15)
+                        .background(Color(.gray_800))
+                        .foregroundColor(Color(.gray_white))
+                        .cornerRadius(50)
+                    }
+                    
+                    Button {
                         viewStore.send(.tappedKakaoLogin)
                     } label: {
                         HStack {
@@ -47,20 +62,6 @@ public struct SignInView: View {
                         .cornerRadius(50)
                     }
 
-                    Button {
-                        viewStore.send(.tappedAppleLogin)
-                    } label: {
-                        HStack {
-                            Image(systemName: "apple.logo")
-                            Text("Apple로 시작하기")
-                                .fontStyle(.body_2)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 15)
-                        .background(Color(.gray_800))
-                        .foregroundColor(Color(.gray_white))
-                        .cornerRadius(50)
-                    }
                 }
                 .padding(.horizontal, 33)
                 .padding(.bottom, 125)
