@@ -38,7 +38,6 @@ struct BadgeCardView: View {
         .padding([.horizontal, .top], 34)
         .padding(.bottom, 27)
         .frame(maxWidth: .infinity, minHeight: 481)
-        .background(backgroundColor)
         .gradientBackground(
             stops: badgeLinearBackground,
             startPoint: .topLeading,
@@ -48,12 +47,17 @@ struct BadgeCardView: View {
             backgroundOpacity: 0.2
         )
         .background(
-            RadialGradient(
-                gradient: Gradient(stops: badgeRadialBackground),
-                center: .bottom,
-                startRadius: 0,
-                endRadius: 400
-            ).opacity(0.2)
+            ZStack {
+                if backgroundColor != .clear {
+                    backgroundColor
+                }
+                RadialGradient(
+                    gradient: Gradient(stops: badgeRadialBackground),
+                    center: .bottom,
+                    startRadius: 0,
+                    endRadius: 400
+                ).opacity(0.2)
+            }
         )
         .clipShape(RoundedRectangle(cornerRadius: 24))
     }
