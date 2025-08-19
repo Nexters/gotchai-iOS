@@ -7,7 +7,7 @@ let project = Project(
     targets: [
         .target(
             name: "Gotchai",
-            destinations: .iOS,
+            destinations: [.iPhone],
             product: .app,
             bundleId: "com.gotchai.Gotchai",
             infoPlist: .extendingDefault(with: [
