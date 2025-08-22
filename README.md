@@ -98,7 +98,7 @@ Gotchai-iOS/
 
 | 강민규 | 유가은 |
 | :---: | :---: |
-|<img width="150" src="https://github.com/koreamango.png">|<img width="150" src="https://github.com/slr-09.png"> |
+|[<img width="150" src="https://github.com/koreamango.png">](https://github.com/koreamango)|[<img width="150" src="https://github.com/slr-09.png">](https://github.com/slr-09) |
 |👁️👄👁️ | ˗ˏˋ(∩╹□╹∩)ˎˊ˗|
 |모바일 앱 개발 러버 🙂| 병아리 개발자 🐥 |
 
