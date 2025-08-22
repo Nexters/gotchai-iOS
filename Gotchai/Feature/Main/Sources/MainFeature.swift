@@ -14,7 +14,7 @@ import Profile
 public struct MainFeature {
     @Dependency(\.turingTestService) var turingTestService
     
-    enum CancelID { case getTuringTestList }
+    enum CancelID { case getTuringTestList, toastTimer }
     
     public init() { }
     
@@ -43,7 +43,7 @@ public struct MainFeature {
         
         // view
         case selectedTabChanged(Tab)
-        case tappedTestCard(Int)
+        case tappedTestCard(Int, Bool)
         case tappedSettingButton
 
         case profile(ProfileFeature.Action)
@@ -70,8 +70,14 @@ public struct MainFeature {
             case let .selectedTabChanged(tab):
                 state.selectedTab = tab
                 return .none
-            case let .tappedTestCard(id):
-                return .send(.delegate(.openTuringTest(id)))
+            case let .tappedTestCard(id, isSolved):
+                if isSolved {
+                    // TODO: 토스트 메세지
+                    return .none
+                } else {
+                    return .send(.delegate(.openTuringTest(id)))
+                }
+                
             case .tappedSettingButton:
                 return .send(.delegate(.moveToSetting))
             case .profile:

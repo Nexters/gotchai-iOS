@@ -79,7 +79,7 @@ public struct MainView: View {
             
             ForEach(store.turingTestItems, id: \.id) { item in
                 Button {
-                    store.send(.tappedTestCard(item.id))
+                    store.send(.tappedTestCard(item.id, item.isSolved))
                 } label: {
                     TestCardItem(item: item)
                 }
